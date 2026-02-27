@@ -340,3 +340,271 @@
 - ученики присоединяются к курсам, проходят уроки, смотрят видео, решают практику и видят детальный прогресс,
 - публичные разделы сайта (новости/достижения/отзывы/контакты) обновляются из БД,
 - сервис разворачивается и поддерживается через Docker-инфраструктуру.
+
+---
+
+## 16. Схема архитектуры (как это выглядит в целом)
+
+### 16.1 Контур системы (высокоуровнево)
+```text
+[Пользователь: Гость/Ученик/Преподаватель/Админ]
+                    |
+                    v
+              [Nginx Reverse Proxy]
+                    |
+                    v
+             [Django Web (HTMX)]
+             /        |          \
+            /         |           \
+           v          v            v
+ [PostgreSQL]   [Media Storage]  [Redis]*
+                                 |
+                                 v
+                           [Worker]*
+```
+`*` — опционально на MVP, но рекомендуется для проверки практических задач и фоновых процессов.
+
+### 16.2 Логическая схема backend (Django apps)
+```text
+core  -> публичные страницы, health
+accounts -> auth, роли, управление пользователями
+courses -> курсы, модули, уроки, запись на курс
+practice -> задачи, попытки, автопроверка
+reviews -> отзывы и модерация
+news -> новости
+achievements -> достижения
+dashboard -> внутренняя панель (admin/teacher)
+audit -> журнал действий
+```
+
+### 16.3 Поток запроса (HTMX-сценарий)
+```text
+Браузер (HTMX click/submit)
+    -> HTTP request
+        -> Django view
+            -> ORM query/update (PostgreSQL)
+            -> partial template render
+    <- HTML fragment response
+Браузер обновляет только нужный блок страницы
+```
+
+### 16.4 Поток прогресса ученика (схематично)
+```text
+Ученик открывает урок/блок/видео/задачу
+   -> событие прогресса (read/watch/do)
+      -> LessonProgressEvent
+      -> пересчет Lesson/CourseProgress
+         -> обновление процента и статуса в "Мои курсы"
+```
+
+### 16.5 Схема сущностей (упрощенно)
+```text
+User (role)
+  |--< Enrollment >-- Course --< CourseModule --< Lesson --< LessonBlock
+  |                                           |
+  |                                           |--< PracticeTask --< TaskAttempt
+  |
+  |--< CourseProgress
+  |--< LessonProgressEvent
+
+Course / User связаны через Enrollment
+Прогресс считается из LessonProgressEvent + TaskAttempt
+```
+
+---
+
+## 17. Состояние проекта на текущий момент
+
+### 17.1 Что уже определено этим ТЗ
+- Стек: Django + PostgreSQL + HTMX + Alpine.js + Docker.
+- Роли и модель доступа (student/teacher/admin).
+- Контентная модель LMS: курс → модуль → урок → блоки.
+- Практика с автопроверкой и хранением попыток.
+- Запись на курс и детализация прогресса (прочитано/просмотрено/выполнено).
+- Публичные разделы: новости, достижения, отзывы, контакты.
+- Мониторинг (`/health/`) и audit log.
+
+### 17.2 Что является следующим шагом после согласования ТЗ
+1. Утвердить ER-диаграмму и матрицу прав (RBAC).
+2. Подготовить каркас Django-проекта и docker-compose.
+3. Реализовать MVP: auth, roles, курсы/уроки, enroll, прогресс.
+4. Подключить редактор lesson blocks + подсветку кода + видео.
+5. Добавить practice worker и безопасную проверку кода.
+6. Закрыть критерии приемки из раздела 13.
+
+---
+
+## 18. Архитектура проекта: структура директорий и файлов
+
+Ниже — рекомендуемая базовая структура репозитория для старта разработки LMS.
+
+```text
+kvantorium/
+├─ .env.example
+├─ .gitignore
+├─ docker-compose.yml
+├─ Dockerfile
+├─ Makefile
+├─ README.md
+├─ docs/
+│  ├─ technical_spec.md
+│  ├─ architecture.md                # детальная архитектура (опц.)
+│  └─ api_contracts.md               # контракты HTMX/endpoint-ов (опц.)
+├─ deploy/
+│  ├─ nginx/
+│  │  ├─ nginx.conf
+│  │  └─ sites-enabled/
+│  │     └─ kvantorium.conf
+│  └─ scripts/
+│     ├─ entrypoint.sh
+│     ├─ migrate.sh
+│     └─ collectstatic.sh
+├─ src/
+│  ├─ manage.py
+│  ├─ config/
+│  │  ├─ __init__.py
+│  │  ├─ asgi.py
+│  │  ├─ wsgi.py
+│  │  ├─ urls.py
+│  │  ├─ celery.py                   # если используется worker
+│  │  └─ settings/
+│  │     ├─ __init__.py
+│  │     ├─ base.py
+│  │     ├─ local.py
+│  │     ├─ dev.py
+│  │     └─ prod.py
+│  ├─ apps/
+│  │  ├─ accounts/
+│  │  │  ├─ admin.py
+│  │  │  ├─ apps.py
+│  │  │  ├─ models.py
+│  │  │  ├─ forms.py
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ services.py
+│  │  │  ├─ permissions.py
+│  │  │  ├─ selectors.py
+│  │  │  ├─ migrations/
+│  │  │  └─ tests/
+│  │  ├─ courses/
+│  │  │  ├─ admin.py
+│  │  │  ├─ models.py                # Course, CourseModule, Lesson, LessonBlock, Enrollment
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ forms.py
+│  │  │  ├─ services.py
+│  │  │  ├─ selectors.py
+│  │  │  ├─ htmx_views.py            # partial-обновления
+│  │  │  ├─ migrations/
+│  │  │  └─ tests/
+│  │  ├─ practice/
+│  │  │  ├─ models.py                # PracticeTask, TaskAttempt
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ services.py              # проверка ответов
+│  │  │  ├─ tasks.py                 # фоновые проверки (если Celery)
+│  │  │  ├─ sandbox/
+│  │  │  │  ├─ runner.py
+│  │  │  │  └─ policies.py
+│  │  │  ├─ migrations/
+│  │  │  └─ tests/
+│  │  ├─ progress/
+│  │  │  ├─ models.py                # CourseProgress, LessonProgressEvent
+│  │  │  ├─ services.py              # пересчет прогресса
+│  │  │  ├─ signals.py
+│  │  │  └─ tests/
+│  │  ├─ news/
+│  │  │  ├─ models.py
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ migrations/
+│  │  │  └─ tests/
+│  │  ├─ achievements/
+│  │  │  ├─ models.py
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ migrations/
+│  │  │  └─ tests/
+│  │  ├─ reviews/
+│  │  │  ├─ models.py
+│  │  │  ├─ moderation.py
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ migrations/
+│  │  │  └─ tests/
+│  │  ├─ core/
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py                 # главная, контакты, /health/
+│  │  │  ├─ context_processors.py
+│  │  │  └─ tests/
+│  │  ├─ dashboard/
+│  │  │  ├─ urls.py
+│  │  │  ├─ views.py
+│  │  │  ├─ widgets.py
+│  │  │  └─ tests/
+│  │  └─ audit/
+│  │     ├─ models.py                # AuditLog
+│  │     ├─ services.py
+│  │     └─ tests/
+│  ├─ templates/
+│  │  ├─ base.html
+│  │  ├─ includes/
+│  │  │  ├─ navbar.html
+│  │  │  ├─ footer.html
+│  │  │  └─ alerts.html
+│  │  ├─ core/
+│  │  ├─ accounts/
+│  │  ├─ courses/
+│  │  │  ├─ course_detail.html
+│  │  │  ├─ lesson_detail.html
+│  │  │  └─ partials/                # HTMX partial templates
+│  │  ├─ dashboard/
+│  │  └─ errors/
+│  │     ├─ 403.html
+│  │     ├─ 404.html
+│  │     └─ 500.html
+│  ├─ static/
+│  │  ├─ css/
+│  │  │  ├─ main.css
+│  │  │  └─ components/
+│  │  ├─ js/
+│  │  │  ├─ app.js
+│  │  │  ├─ htmx-init.js
+│  │  │  ├─ alpine/
+│  │  │  │  ├─ courseEditor.js
+│  │  │  │  └─ progressWidgets.js
+│  │  │  └─ vendor/
+│  │  │     ├─ htmx.min.js
+│  │  │     ├─ alpine.min.js
+│  │  │     └─ prism.min.js
+│  │  └─ img/
+│  ├─ media/                          # локально в dev; в prod вынос в объектное хранилище
+│  └─ locale/
+└─ tests/
+   ├─ e2e/
+   ├─ integration/
+   └─ smoke/
+```
+
+### 18.1 Принципы организации кода
+1. **App-per-domain**: каждая предметная область в отдельном Django app.
+2. **Разделение ответственности**:
+   - `models.py` — данные,
+   - `views.py`/`htmx_views.py` — HTTP-слой,
+   - `services.py` — бизнес-логика,
+   - `selectors.py` — сложные выборки чтения.
+3. **Шаблоны и partials**:
+   - полноразмерные страницы + отдельные HTMX-фрагменты.
+4. **Статика**:
+   - Alpine/HTMX инициализируются из `static/js`,
+   - единая система стилей через `static/css`.
+5. **Тесты рядом с приложениями + общий `tests/`** для интеграционных и e2e сценариев.
+
+### 18.2 Минимальный набор файлов для старта MVP
+- `docker-compose.yml`, `Dockerfile`, `.env.example`
+- `src/manage.py`, `src/config/settings/base.py`, `src/config/urls.py`
+- `src/apps/accounts/models.py` (кастомный User)
+- `src/apps/courses/models.py` (Course/Module/Lesson/Enrollment)
+- `src/apps/progress/models.py` (CourseProgress/LessonProgressEvent)
+- `src/apps/core/views.py` (`/health/`)
+- `src/templates/base.html`, `src/static/css/main.css`, `src/static/js/app.js`
