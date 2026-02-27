@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 1: Начало работы с Python | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="python.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Заголовок урока -->
+    <section class="python-header">
+        <div class="container">
+            <h1><i class="fab fa-python"></i> Урок 1: Начало работы с Python</h1>
+            <p class="section-subtitle">Установи Python и напиши свою первую программу!</p>
+        </div>
+    </section>
+
+    <!-- Содержание урока -->
+    <section class="materials-section">
+        <div class="container">
+            <div class="lesson-content">
+                <div class="lesson-step">
+                    <h3>Шаг 1: Установка Python</h3>
+                    <p>Для начала работы с Python нужно установить его на свой компьютер:</p>
+                    <ol>
+                        <li>Перейдите на официальный сайт <a href="https://www.python.org/downloads/" target="_blank">python.org</a></li>
+                        <li>Скачайте последнюю версию Python (рекомендуем Python 3.x)</li>
+                        <li>Запустите установщик и следуйте инструкциям</li>
+                        <li>Обязательно отметьте галочку "Add Python to PATH"</li>
+                    </ol>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-lightbulb"></i> Совет</h4>
+                        <p>После установки откройте командную строку (Terminal на Mac/Linux или Command Prompt на Windows) и введите <code>python --version</code>. Если вы видите версию Python, значит установка прошла успешно!</p>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Шаг 2: Выбор среды разработки</h3>
+                    <p>Для написания программ на Python вам понадобится текстовый редактор или среда разработки (IDE). Вот несколько вариантов:</p>
+                    
+                    <ul>
+                        <li><strong>IDLE</strong> - простая среда, которая идет вместе с Python</li>
+                        <li><strong>Thonny</strong> - отличный выбор для начинающих</li>
+                        <li><strong>VS Code</strong> - мощный редактор с поддержкой Python</li>
+                        <li><strong>PyCharm</strong> - профессиональная среда разработки</li>
+                    </ul>
+                    
+                    <p>Для начала мы рекомендуем использовать <strong>Thonny</strong> - он простой и понятный для новичков.</p>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Шаг 3: Первая программа "Привет, мир!"</h3>
+                    <p>Традиционно первой программой на любом языке программирования является вывод фразы "Hello, World!" на экран. В Python это делается очень просто:</p>
+                    
+                    <div class="code-example">
+<pre><code>print("Привет, мир!")
+print("Я изучаю Python!")
+print("Это мой первый урок!")</code></pre>
+                    </div>
+                    
+                    <p>Давайте разберем эту программу:</p>
+                    <ul>
+                        <li><code>print()</code> - это функция, которая выводит текст на экран</li>
+                        <li>Текст, который мы хотим вывести, помещается в кавычки внутри скобок</li>
+                        <li>Каждая новая команда пишется с новой строки</li>
+                    </ul>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Шаг 4: Сохранение и запуск программы</h3>
+                    <p>Чтобы сохранить и запустить свою программу:</p>
+                    <ol>
+                        <li>Откройте выбранную вами среду разработки (например, Thonny)</li>
+                        <li>Напишите программу из предыдущего шага</li>
+                        <li>Сохраните файл с расширением <code>.py</code> (например, <code>hello.py</code>)</li>
+                        <li>Нажмите кнопку "Run" или "Запустить"</li>
+                    </ol>
+                    
+                    <p>Если все сделано правильно, вы увидите результат выполнения программы в окне вывода.</p>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Шаг 5: Работа с комментариями</h3>
+                    <p>Комментарии - это пояснения в коде, которые игнорируются Python. Они помогают понять, что делает программа.</p>
+                    
+                    <div class="code-example">
+<pre><code># Это однострочный комментарий
+# Он начинается с символа решетки (#)
+
+print("Привет, мир!")  # А это комментарий в конце строки
+
+"""
+Это многострочный комментарий.
+Он полезен для длинных пояснений.
+Такие комментарии обрамляются тройными кавычками.
+"""</code></pre>
+                    </div>
+                    
+                    <p>Комментарии - важная часть программирования! Всегда пишите комментарии к своему коду.</p>
+                </div>
+                
+                <div class="task-box">
+                    <h4><i class="fas fa-tasks"></i> Практическое задание</h4>
+                    <p>Создайте программу, которая выводит на экран:</p>
+                    <ol>
+                        <li>Ваше имя</li>
+                        <li>Ваш возраст</li>
+                        <li>Ваш любимый цвет</li>
+                        <li>Пустую строку между каждым пунктом</li>
+                    </ol>
+                    
+                    <p>Пример результата:</p>
+                    <div class="code-example">
+<pre><code>Меня зовут Анна
+Мне 12 лет
+
+Мой любимый цвет - синий</code></pre>
+                    </div>
+                    
+                    <p><strong>Подсказка:</strong> используйте функцию <code>print()</code> и пустые строки можно выводить так: <code>print()</code> или <code>print("")</code>.</p>
+                </div>
+                
+                <div class="lesson-tips">
+                    <h4><i class="fas fa-star"></i> Советы для успешного обучения</h4>
+                    <ul>
+                        <li>Не бойтесь ошибаться! Ошибки - это нормальная часть обучения</li>
+                        <li>Практикуйтесь каждый день, даже по 15-20 минут</li>
+                        <li>Сохраняйте все свои программы - они пригодятся в будущем</li>
+                        <li>Задавайте вопросы, если что-то непонятно</li>
+                    </ul>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <a href="index.html" class="nav-btn prev">
+                        <i class="fas fa-arrow-left"></i> Назад к урокам
+                    </a>
+                    <a href="lesson2.html" class="nav-btn next">
+                        Следующий урок: Переменные <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="index.html" class="active">Python</a></li>
+                        <li><a href="../scratch/index.html">Scratch</a></li>
+                        <li><a href="../appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                        <li><a href="https://www.python.org" target="_blank">Официальный сайт Python</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="scratch.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Заголовок страницы -->
+    <section class="scratch-header">
+        <div class="container">
+            <h1><i class="fas fa-cat"></i> Scratch для детей</h1>
+            <p class="section-subtitle">Создавай игры и анимации, перетаскивая блоки кода!</p>
+        </div>
+    </section>
+
+    <!-- Информация о Scratch -->
+    <section class="info-section">
+        <div class="container">
+            <h2>Что такое Scratch?</h2>
+            <p class="section-subtitle">Scratch - это визуальный язык программирования, созданный специально для детей. Здесь не нужно писать код - просто собирай программу из цветных блоков, как конструктор!</p>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <h3>Блочное программирование</h3>
+                    <p>Собирай программы из готовых блоков - никакого сложного кода!</p>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Создавай игры</h3>
+                    <p>Делай свои собственные игры, анимации и интерактивные истории</p>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Сообщество</h3>
+                    <p>Показывай свои проекты друзьям и смотри проекты других детей</p>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Работает в браузере</h3>
+                    <p>Не нужно ничего устанавливать - работай прямо на сайте Scratch</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Проекты -->
+    <section class="projects">
+        <div class="container">
+            <h2>Наши учебные проекты</h2>
+            <p class="section-subtitle">Выбери проект и создай свою первую программу на Scratch</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-cat"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-difficulty difficulty-easy">Начальный уровень</span>
+                        <h3>Первая анимация</h3>
+                        <p>Создай простую анимацию с движущимся спрайтом. Научись добавлять персонажей и управлять их движением.</p>
+                        <a href="project1.html" class="project-btn">Изучить проект</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-difficulty difficulty-medium">Средний уровень</span>
+                        <h3>Игра "Поймай яблоко"</h3>
+                        <p>Создай игру, где нужно ловить падающие яблоки. Изучи основы игрового дизайна и логику игр.</p>
+                        <a href="project2.html" class="project-btn">Изучить проект</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-difficulty difficulty-hard">Продвинутый уровень</span>
+                        <h3>Интерактивная история</h3>
+                        <p>Создай интерактивную сказку с разными сценами, персонажами и выбором действий.</p>
+                        <a href="project3.html" class="project-btn">Изучить проект</a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-maze"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-difficulty difficulty-medium">Средний уровень</span>
+                        <h3>Лабиринт</h3>
+                        <p>Создай игру-лабиринт с управлением стрелками и несколькими уровнями сложности.</p>
+                        <a href="project4.html" class="project-btn">Изучить проект</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <h3>Как начать?</h3>
+                <p>Перейди на официальный сайт <a href="https://scratch.mit.edu" target="_blank" style="color: var(--scratch-color); font-weight: 600;">Scratch</a>, создай бесплатный аккаунт и начинай творить!</p>
+                <a href="https://scratch.mit.edu" target="_blank" class="btn-hero" style="background-color: var(--scratch-color); margin-top: 20px;">Перейти на Scratch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Видеоуроки -->
+    <section class="video-lessons">
+        <div class="container">
+            <h2>Видеоуроки по Scratch</h2>
+            <p class="section-subtitle">Смотри уроки и повторяй шаг за шагом</p>
+            
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>Знакомство со Scratch</h4>
+                        <p>Основные элементы интерфейса, создание первого проекта</p>
+                        <a href="#" class="video-btn">Смотреть урок</a>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>Движение спрайтов</h4>
+                        <p>Как заставить персонажей двигаться по экрану</p>
+                        <a href="#" class="video-btn">Смотреть урок</a>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>Создание диалогов</h4>
+                        <p>Как сделать, чтобы персонажи разговаривали между собой</p>
+                        <a href="#" class="video-btn">Смотреть урок</a>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>Игровая механика</h4>
+                        <p>Основы создания игр: счет, уровни, победа и поражение</p>
+                        <a href="#" class="video-btn">Смотреть урок</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="../python/index.html">Python</a></li>
+                        <li><a href="index.html" class="active">Scratch</a></li>
+                        <li><a href="../appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script src="scratch.js"></script>
+</body>
+</html>

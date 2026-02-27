@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости | Кванториум 22</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .news-header {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #1a73b8 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .news-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .news-image {
+            height: 200px;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+        }
+        
+        .python-news {
+            background-color: var(--python-color);
+        }
+        
+        .scratch-news {
+            background-color: var(--scratch-color);
+        }
+        
+        .appinventor-news {
+            background-color: var(--appinventor-color);
+        }
+        
+        .event-news {
+            background-color: var(--accent-color);
+        }
+        
+        .news-content {
+            padding: 30px;
+        }
+        
+        .news-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .news-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            line-height: 1.3;
+        }
+        
+        .news-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .news-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .python-tag {
+            background-color: #e6f0f8;
+            color: var(--python-color);
+        }
+        
+        .scratch-tag {
+            background-color: #fef3e2;
+            color: var(--scratch-color);
+        }
+        
+        .appinventor-tag {
+            background-color: #edf5e7;
+            color: var(--appinventor-color);
+        }
+        
+        .event-tag {
+            background-color: #e6f7f2;
+            color: var(--accent-color);
+        }
+        
+        .news-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .upcoming-events {
+            background-color: #f0f7ff;
+            padding: 80px 0;
+        }
+        
+        .events-list {
+            max-width: 800px;
+            margin: 50px auto 0;
+        }
+        
+        .event-item {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        
+        .event-date {
+            text-align: center;
+            min-width: 70px;
+        }
+        
+        .event-day {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+        
+        .event-month {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+        
+        .event-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+        
+        .event-details p {
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        .event-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .news-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .event-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .event-date {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="news.html" class="active"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Заголовок страницы -->
+    <section class="news-header">
+        <div class="container">
+            <h1>Новости и события</h1>
+            <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.9);">Следите за последними новостями Кванториума 22</p>
+        </div>
+    </section>
+
+    <!-- Новости -->
+    <section class="news-list">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;">Последние новости</h2>
+            <p class="section-subtitle">Все самое интересное из жизни нашего технопарка</p>
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image python-news">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">
+                            <i class="far fa-calendar"></i>
+                            <span>15 октября 2023</span>
+                        </div>
+                        <h3>Новый курс Python для начинающих</h3>
+                        <p>Мы запускаем новый курс по основам Python для детей 12-14 лет. Научим создавать первые программы, игры и полезные скрипты.</p>
+                        <div>
+                            <span class="news-tag python-tag">Python</span>
+                            <span class="news-tag event-tag">Новый курс</span>
+                        </div>
+                        <a href="#" class="news-link">Подробнее <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image scratch-news">
+                        <i class="fas fa-cat"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">
+                            <i class="far fa-calendar"></i>
+                            <span>10 октября 2023</span>
+                        </div>
+                        <h3>Итоги конкурса Scratch-проектов</h3>
+                        <p>Подвели итоги ежегодного конкурса проектов на Scratch. Участвовало более 50 детей в возрасте от 6 до 12 лет.</p>
+                        <div>
+                            <span class="news-tag scratch-tag">Scratch</span>
+                            <span class="news-tag event-tag">Конкурс</span>
+                        </div>
+                        <a href="#" class="news-link">Смотреть проекты <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image appinventor-news">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">
+                            <i class="far fa-calendar"></i>
+                            <span>5 октября 2023</span>
+                        </div>
+                        <h3>Вышло обновление MIT App Inventor</h3>
+                        <p>Рассказываем о новых возможностях обновленной платформы MIT App Inventor и как это поможет в создании приложений.</p>
+                        <div>
+                            <span class="news-tag appinventor-tag">App Inventor</span>
+                            <span class="news-tag event-tag">Обновление</span>
+                        </div>
+                        <a href="#" class="news-link">Читать статью <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="news-card">
+                    <div class="news-image event-news">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date">
+                            <i class="far fa-calendar"></i>
+                            <span>28 сентября 2023</span>
+                        </div>
+                        <h3>День открытых дверей в Кванториуме</h3>
+                        <p>Приглашаем всех желающих на день открытых дверей! Презентация курсов, мастер-классы и знакомство с педагогами.</p>
+                        <div>
+                            <span class="news-tag python-tag">Python</span>
+                            <span class="news-tag scratch-tag">Scratch</span>
+                            <span class="news-tag event-tag">Мероприятие</span>
+                        </div>
+                        <a href="#" class="news-link">Записаться <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Предстоящие события -->
+    <section class="upcoming-events">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;">Ближайшие события</h2>
+            <p class="section-subtitle">Запланируйте участие в наших мероприятиях</p>
+            
+            <div class="events-list">
+                <div class="event-item">
+                    <div class="event-date">
+                        <div class="event-day">25</div>
+                        <div class="event-month">Октября</div>
+                    </div>
+                    <div class="event-details">
+                        <h3>Мастер-класс "Создай свою первую игру на Python"</h3>
+                        <p>Бесплатный мастер-класс для детей 12-15 лет. Познакомим с основами PyGame и создадим простую игру.</p>
+                        <div class="event-time">
+                            <i class="far fa-clock"></i>
+                            <span>15:00 - 17:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-date">
+                        <div class="event-day">28</div>
+                        <div class="event-month">Октября</div>
+                    </div>
+                    <div class="event-details">
+                        <h3>День открытых дверей</h3>
+                        <p>Приглашаем детей и родителей познакомиться с Кванториумом, нашими педагогами и курсами.</p>
+                        <div class="event-time">
+                            <i class="far fa-clock"></i>
+                            <span>12:00 - 18:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2017 года. Более 700 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="python/index.html">Python</a></li>
+                        <li><a href="scratch/index.html">Scratch</a></li>
+                        <li><a href="appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="achievements.html">Достижения</a></li>
+                        <li><a href="news.html" class="active">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

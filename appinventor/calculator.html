@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор на MIT App Inventor | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="project-header calculator-header">
+        <div class="container">
+            <h1>Создание калькулятора</h1>
+            <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.9);">Учебное пособие по созданию калькулятора на MIT App Inventor</p>
+        </div>
+    </section>
+
+    <section class="tutorial">
+        <div class="container tutorial-container">
+            <div class="step calculator-step">
+                <div class="step-number">1</div>
+                <h3>Подготовка рабочей среды</h3>
+                <div class="step-content">
+                    <p>Для начала работы с MIT App Inventor необходимо:</p>
+                    <ul class="component-list">
+                        <li><i class="fas fa-check-circle"></i> Зарегистрироваться на сайте <a href="https://appinventor.mit.edu" target="_blank" style="color: var(--appinventor-color); font-weight: 600;">appinventor.mit.edu</a></li>
+                        <li><i class="fas fa-check-circle"></i> Создать новый проект "Calculator"</li>
+                        <li><i class="fas fa-check-circle"></i> Установить приложение MIT App Inventor Companion на свой Android-смартфон для тестирования</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-lightbulb"></i> Совет</h4>
+                        <p>Если у вас нет Android-устройства, вы можете использовать эмулятор на компьютере. В меню "Подключить" выберите "Эмулятор".</p>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-mobile-alt"></i> Установка MIT App Inventor Companion</h4>
+                        <p>Скачайте приложение из Google Play или отсканируйте QR-код в MIT App Inventor. Оно нужно для тестирования приложений на телефоне в реальном времени.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">2</div>
+                <h3>Дизайн интерфейса</h3>
+                <div class="step-content">
+                    <p>Перейдите во вкладку "Designer" (Дизайнер). Добавьте следующие компоненты на экран:</p>
+                    
+                    <div class="block-diagram">
+                        <h4>Компоненты калькулятора:</h4>
+                        
+                        <div class="block-row">
+                            <div class="block">TextBox</div>
+                            <div class="block-connector">→</div>
+                            <div class="block">Переименовать в "DisplayTextBox"</div>
+                        </div>
+                        
+                        <div class="block-row">
+                            <div class="block">Button</div>
+                            <div class="block-connector">× 10</div>
+                            <div class="block">Цифры 0-9</div>
+                        </div>
+                        
+                        <div class="block-row">
+                            <div class="block">Button</div>
+                            <div class="block-connector">× 4</div>
+                            <div class="block">Операции +, -, ×, ÷</div>
+                        </div>
+                        
+                        <div class="block-row">
+                            <div class="block">Button</div>
+                            <div class="block-connector">→</div>
+                            <div class="block">"=" (равно)</div>
+                        </div>
+                        
+                        <div class="block-row">
+                            <div class="block">Button</div>
+                            <div class="block-connector">→</div>
+                            <div class="block">"C" (очистка)</div>
+                        </div>
+                        
+                        <div class="block-row">
+                            <div class="block">Button</div>
+                            <div class="block-connector">→</div>
+                            <div class="block">"." (десятичная точка)</div>
+                        </div>
+                    </div>
+                    
+                    <p><strong>Как расположить кнопки:</strong></p>
+                    <ol>
+                        <li>TextBox разместите вверху экрана, сделайте его достаточно большим</li>
+                        <li>Кнопки расположите в виде сетки 4×5 как на обычном калькуляторе</li>
+                        <li>Первая строка: 7 8 9 ÷</li>
+                        <li>Вторая строка: 4 5 6 ×</li>
+                        <li>Третья строка: 1 2 3 -</li>
+                        <li>Четвертая строка: 0 . C +</li>
+                        <li>Пятая строка: = (на всю ширину)</li>
+                    </ol>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-paint-brush"></i> Дизайнерские советы</h4>
+                        <p>Измените цвета кнопок: цифры - серый, операции - оранжевый, равно - зеленый, очистка - красный. Это сделает калькулятор более понятным.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">3</div>
+                <h3>Логика работы калькулятора</h3>
+                <div class="step-content">
+                    <p>Перейдите во вкладку "Blocks" (Блоки). Нам понадобятся следующие глобальные переменные:</p>
+                    
+                    <div class="code-block">
+// Глобальные переменные для калькулятора
+
+firstNumber = ""      // Первое число
+secondNumber = ""     // Второе число
+operation = ""        // Текущая операция (+, -, ×, ÷)
+isNewNumber = true    // Флаг: ввод нового числа?
+currentResult = ""    // Текущий результат
+                    </div>
+                    
+                    <p><strong>Принцип работы калькулятора:</strong></p>
+                    <ol>
+                        <li>Пользователь нажимает цифры - они добавляются к текущему числу</li>
+                        <li>При нажатии на операцию (+, -, ×, ÷) сохраняем первое число и тип операции</li>
+                        <li>Пользователь вводит второе число</li>
+                        <li>При нажатии "=" выполняем вычисление и выводим результат</li>
+                        <li>Кнопка "C" очищает все данные и дисплей</li>
+                    </ol>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-brain"></i> Понимание логики</h4>
+                        <p>Переменная <code>isNewNumber</code> помогает понять, вводим ли мы новое число (после операции или очистки) или продолжаем ввод текущего числа.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">4</div>
+                <h3>Программирование кнопок цифр</h3>
+                <div class="step-content">
+                    <p>Для каждой кнопки с цифрой создаем блок. Например, для кнопки "1":</p>
+                    
+                    <div class="code-block">
+// Когда нажата кнопка 1
+если isNewNumber = true тогда
+    установить DisplayTextBox.Text = "1"
+    установить isNewNumber = false
+иначе
+    установить DisplayTextBox.Text = объединить(DisplayTextBox.Text, "1")
+конец
+                    </div>
+                    
+                    <p><strong>Что делает этот код:</strong></p>
+                    <ul>
+                        <li>Если мы только начали вводить новое число (<code>isNewNumber = true</code>), то заменяем весь текст на "1"</li>
+                        <li>Если мы продолжаем вводить число (<code>isNewNumber = false</code>), то добавляем "1" к текущему тексту</li>
+                        <li>Устанавливаем <code>isNewNumber = false</code>, потому что теперь мы вводим число</li>
+                    </ul>
+                    
+                    <p>Создайте аналогичные блоки для всех цифр от 0 до 9.</p>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-copy"></i> Быстрое копирование</h4>
+                        <p>Создайте блок для одной цифры, затем копируйте его (правый клик → Duplicate) и меняйте только цифру в блоке "установить Text".</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">5</div>
+                <h3>Программирование кнопки точки</h3>
+                <div class="step-content">
+                    <p>Кнопка точки (.) добавляет десятичную часть числа:</p>
+                    
+                    <div class="code-block">
+// Когда нажата кнопка .
+если не содержит(DisplayTextBox.Text, ".") тогда
+    установить DisplayTextBox.Text = объединить(DisplayTextBox.Text, ".")
+    установить isNewNumber = false
+конец
+                    </div>
+                    
+                    <p><strong>Особенности:</strong></p>
+                    <ul>
+                        <li>Проверяем, нет ли уже точки в числе (чтобы не было "5.2.1")</li>
+                        <li>Если точки нет - добавляем ее</li>
+                        <li>Если ввод был начат заново (<code>isNewNumber = true</code>), то нужно добавить "0." вместо просто "."</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Улучшенная версия</h4>
+                        <p>Лучше сделать так:</p>
+                        <div class="code-block">
+если isNewNumber = true тогда
+    установить DisplayTextBox.Text = "0."
+    установить isNewNumber = false
+иначе
+    если не содержит(DisplayTextBox.Text, ".") тогда
+        установить DisplayTextBox.Text = объединить(DisplayTextBox.Text, ".")
+    конец
+конец
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">6</div>
+                <h3>Программирование операций</h3>
+                <div class="step-content">
+                    <p>Для кнопки "+" создаем блок:</p>
+                    
+                    <div class="code-block">
+// Когда нажата кнопка +
+установить firstNumber = DisplayTextBox.Text
+установить operation = "+"
+установить isNewNumber = true
+                    </div>
+                    
+                    <p>Аналогичные блоки создаем для операций -, ×, ÷.</p>
+                    
+                    <p><strong>Что происходит:</strong></p>
+                    <ol>
+                        <li>Сохраняем текущее число из дисплея в переменную <code>firstNumber</code></li>
+                        <li>Сохраняем тип операции в переменную <code>operation</code></li>
+                        <li>Устанавливаем <code>isNewNumber = true</code>, чтобы следующая цифра начала новое число</li>
+                    </ol>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Важно!</h4>
+                        <p>Для операции деления нужно добавить проверку деления на ноль перед выполнением вычисления. Мы сделаем это в блоке кнопки "=".</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">7</div>
+                <h3>Программирование кнопки "="</h3>
+                <div class="step-content">
+                    <p>Кнопка "равно" выполняет вычисление. Это самый сложный блок:</p>
+                    
+                    <div class="code-block">
+// Когда нажата кнопка =
+установить secondNumber = DisplayTextBox.Text
+
+если operation = "+" тогда
+    установить currentResult = преобразовать_в_число(firstNumber) + преобразовать_в_число(secondNumber)
+    
+иначе если operation = "-" тогда
+    установить currentResult = преобразовать_в_число(firstNumber) - преобразовать_в_число(secondNumber)
+    
+иначе если operation = "×" тогда
+    установить currentResult = преобразовать_в_число(firstNumber) * преобразовать_в_число(secondNumber)
+    
+иначе если operation = "÷" тогда
+    если secondNumber = "0" тогда
+        установить DisplayTextBox.Text = "Ошибка: деление на 0"
+        вызвать ОчиститьВсе
+    иначе
+        установить currentResult = преобразовать_в_число(firstNumber) / преобразовать_в_число(secondNumber)
+    конец
+конец
+
+// Выводим результат (если не было ошибки)
+если operation ≠ "" тогда
+    установить DisplayTextBox.Text = currentResult
+    установить firstNumber = currentResult
+    установить isNewNumber = true
+    установить operation = ""
+конец
+                    </div>
+                    
+                    <p><strong>Пояснения:</strong></p>
+                    <ul>
+                        <li><code>преобразовать_в_число()</code> - функция, которая превращает текст в число</li>
+                        <li>Проверка деления на ноль важна, иначе программа упадет с ошибкой</li>
+                        <li>После вычисления результат становится новым <code>firstNumber</code>, чтобы можно было продолжать вычисления</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">8</div>
+                <h3>Программирование кнопки "C"</h3>
+                <div class="step-content">
+                    <p>Кнопка "C" (Clear) очищает все данные:</p>
+                    
+                    <div class="code-block">
+// Когда нажата кнопка C
+установить DisplayTextBox.Text = "0"
+установить firstNumber = ""
+установить secondNumber = ""
+установить operation = ""
+установить isNewNumber = true
+установить currentResult = ""
+                    </div>
+                    
+                    <p>Также стоит создать процедуру (функцию) для очистки, чтобы использовать ее в разных местах:</p>
+                    
+                    <div class="code-block">
+// Процедура ОчиститьВсе
+установить DisplayTextBox.Text = "0"
+установить firstNumber = ""
+установить secondNumber = ""
+установить operation = ""
+установить isNewNumber = true
+установить currentResult = ""
+                    </div>
+                    
+                    <p>Теперь в блоке кнопки "C" и в блоке деления на ноль можно просто вызывать <code>ОчиститьВсе</code>.</p>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">9</div>
+                <h3>Тестирование и улучшения</h3>
+                <div class="step-content">
+                    <p>После создания основных функций протестируйте калькулятор:</p>
+                    
+                    <ul class="component-list">
+                        <li><i class="fas fa-check-circle"></i> Проверьте простые операции: 5 + 3 = 8</li>
+                        <li><i class="fas fa-check-circle"></i> Проверьте цепочку вычислений: 2 + 3 = 5 × 2 = 10</li>
+                        <li><i class="fas fa-check-circle"></i> Проверьте деление на ноль: 5 ÷ 0 → ошибка</li>
+                        <li><i class="fas fa-check-circle"></i> Проверьте работу с десятичными числами: 1.5 + 2.3 = 3.8</li>
+                        <li><i class="fas fa-check-circle"></i> Проверьте кнопку очистки</li>
+                    </ul>
+                    
+                    <div class="task-box">
+                        <h4><i class="fas fa-tasks"></i> Дополнительные функции</h4>
+                        <p>Попробуйте добавить эти улучшения:</p>
+                        <ol>
+                            <li>Кнопка "+/-" для изменения знака числа</li>
+                            <li>Кнопка "%" для вычисления процентов</li>
+                            <li>Кнопка "√" для квадратного корня</li>
+                            <li>История вычислений (показывает последние операции)</li>
+                            <li>Звуки при нажатии кнопок</li>
+                            <li>Темная/светлая тема</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-rocket"></i> Профессиональный уровень</h4>
+                        <p>Создайте научный калькулятор с дополнительными функциями: sin, cos, tan, log, возведение в степень (x^y), факториал (n!).</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step calculator-step">
+                <div class="step-number">10</div>
+                <h3>Экспорт приложения</h3>
+                <div class="step-content">
+                    <p>Готовое приложение можно установить на телефон:</p>
+                    
+                    <ol>
+                        <li>В меню "Build" выберите "App (save .apk to my computer)"</li>
+                        <li>Скачайте файл .apk на компьютер</li>
+                        <li>Перекиньте файл на телефон (по USB или через облако)</li>
+                        <li>На телефоне разрешите установку из неизвестных источников</li>
+                        <li>Установите приложение и запустите его!</li>
+                    </ol>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-share-alt"></i> Поделитесь приложением</h4>
+                        <p>Отправьте файл .apk друзьям и родственникам, чтобы они могли пользоваться вашим калькулятором!</p>
+                    </div>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-qrcode"></i> Быстрая установка</h4>
+                        <p>В меню "Build" есть опция "Show QR Code". Отсканируйте QR-код с телефона, чтобы скачать приложение напрямую.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navigation-buttons">
+                <a href="index.html" class="nav-btn prev">
+                    <i class="fas fa-arrow-left"></i> Назад к проектам
+                </a>
+                <a href="notepad.html" class="nav-btn next">
+                    Следующий проект: Блокнот <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="../python/index.html">Python</a></li>
+                        <li><a href="../scratch/index.html">Scratch</a></li>
+                        <li><a href="index.html" class="active">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

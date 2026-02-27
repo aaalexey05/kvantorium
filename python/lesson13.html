@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 13: Библиотека Turtle | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="python.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .turtle-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .turtle-visual {
+            background: white;
+            border: 2px solid var(--python-color);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .turtle-canvas {
+            width: 300px;
+            height: 300px;
+            background: #f0f7ff;
+            border: 2px dashed #4a90e2;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .turtle {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 L70,40 L50,70 L30,40 Z" fill="%234a90e2"/><circle cx="50" cy="40" r="5" fill="white"/></svg>') no-repeat center;
+            background-size: contain;
+            transition: all 0.5s ease;
+            top: 150px;
+            left: 150px;
+        }
+        
+        .command-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .turtle-btn {
+            background: var(--python-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .turtle-btn:hover {
+            background: #357abd;
+        }
+        
+        .turtle-path {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="python-header">
+        <div class="container">
+            <h1><i class="fab fa-python"></i> Урок 13: Библиотека Turtle</h1>
+            <p class="section-subtitle">Создаем графику и анимации с помощью черепашки</p>
+        </div>
+    </section>
+
+    <section class="materials-section">
+        <div class="container">
+            <div class="lesson-content">
+                <div class="lesson-step">
+                    <h3>Что такое Turtle Graphics?</h3>
+                    <p>Turtle — это библиотека Python для создания графики и анимаций. Представьте себе черепашку с пером, которая рисует линии, когда двигается.</p>
+                    
+                    <div class="turtle-container">
+                        <div class="turtle-visual">
+                            <h4>Визуализация Turtle</h4>
+                            <div class="turtle-canvas" id="turtleCanvas">
+                                <div class="turtle" id="turtle"></div>
+                                <canvas class="turtle-path" id="turtlePath"></canvas>
+                            </div>
+                            <div class="command-buttons">
+                                <button class="turtle-btn" onclick="moveTurtle('forward')">Вперед (100)</button>
+                                <button class="turtle-btn" onclick="moveTurtle('backward')">Назад (100)</button>
+                                <button class="turtle-btn" onclick="rotateTurtle('left')">Влево (90°)</button>
+                                <button class="turtle-btn" onclick="rotateTurtle('right')">Вправо (90°)</button>
+                                <button class="turtle-btn" onclick="clearCanvas()">Очистить</button>
+                            </div>
+                        </div>
+                        
+                        <div class="turtle-visual">
+                            <h4>Основные команды</h4>
+                            <ul style="text-align: left; padding: 20px;">
+                                <li><code>forward(distance)</code> - движение вперед</li>
+                                <li><code>backward(distance)</code> - движение назад</li>
+                                <li><code>left(angle)</code> - поворот влево</li>
+                                <li><code>right(angle)</code> - поворот вправо</li>
+                                <li><code>penup()</code> - поднять перо</li>
+                                <li><code>pendown()</code> - опустить перо</li>
+                                <li><code>color("red")</code> - изменить цвет</li>
+                                <li><code>pensize(5)</code> - толщина линии</li>
+                                <li><code>circle(50)</code> - нарисовать круг</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="code-example">
+<pre><code># Простейшая программа на Turtle
+import turtle
+
+# Создаем черепашку
+t = turtle.Turtle()
+
+# Настраиваем черепашку
+t.shape("turtle")  # Делаем курсор в виде черепашки
+t.color("green")
+t.pensize(3)
+
+# Рисуем квадрат
+for i in range(4):
+    t.forward(100)  # Двигаемся вперед на 100 пикселей
+    t.left(90)      # Поворачиваем на 90 градусов влево
+
+# Перемещаемся
+t.penup()          # Поднимаем перо (перестаем рисовать)
+t.goto(150, 0)     # Перемещаемся в другую точку
+t.pendown()        # Опускаем перо (начинаем рисовать)
+
+# Рисуем круг
+t.color("red")
+t.circle(50)       # Рисуем круг радиусом 50
+
+# Завершаем программу
+turtle.done()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Настройка окна и черепашки</h3>
+                    <p>Настроим размеры окна, фон и параметры черепашки:</p>
+                    
+                    <div class="code-example">
+<pre><code>import turtle
+
+# Настройка окна
+screen = turtle.Screen()
+screen.title("Моя графика на Turtle")  # Заголовок окна
+screen.bgcolor("lightblue")            # Цвет фона
+screen.setup(width=800, height=600)    # Размер окна
+
+# Настройка черепашки
+t = turtle.Turtle()
+t.speed(5)           # Скорость от 1 (медленно) до 10 (быстро), 0 - максимальная
+
+# Изменяем форму курсора
+# Доступные формы: "arrow", "turtle", "circle", "square", "triangle", "classic"
+t.shape("turtle")
+
+# Изменяем цвет черепашки и пера
+t.color("darkgreen", "lightgreen")  # Первый цвет - линии, второй - заливка
+
+# Изменяем размер пера
+t.pensize(3)
+
+# Поднимаем перо (чтобы не рисовать при перемещении)
+t.penup()
+
+# Перемещаемся в начальную позицию
+t.goto(-200, 0)
+
+# Опускаем перо (начинаем рисовать)
+t.pendown()
+
+# Рисуем линию
+t.forward(100)
+
+# Скрываем/показываем черепашку
+t.hideturtle()  # Скрыть
+# t.showturtle()  # Показать
+
+# Получаем текущие координаты
+x, y = t.position()
+print(f"Текущие координаты: x={x}, y={y}")
+
+# Получаем текущее направление
+heading = t.heading()
+print(f"Текущее направление: {heading} градусов")
+
+turtle.done()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Рисование фигур</h3>
+                    <p>Создадим различные геометрические фигуры:</p>
+                    
+                    <div class="code-example">
+<pre><code>import turtle
+
+t = turtle.Turtle()
+t.speed(5)
+t.pensize(2)
+
+# 1. Квадрат
+def draw_square(size, color="black"):
+    t.color(color)
+    for _ in range(4):
+        t.forward(size)
+        t.left(90)
+
+# 2. Треугольник
+def draw_triangle(size, color="black"):
+    t.color(color)
+    for _ in range(3):
+        t.forward(size)
+        t.left(120)
+
+# 3. Круг
+def draw_circle(radius, color="black"):
+    t.color(color)
+    t.circle(radius)
+
+# 4. Многоугольник
+def draw_polygon(sides, size, color="black"):
+    t.color(color)
+    angle = 360 / sides
+    for _ in range(sides):
+        t.forward(size)
+        t.left(angle)
+
+# 5. Звезда
+def draw_star(size, color="black"):
+    t.color(color)
+    for _ in range(5):
+        t.forward(size)
+        t.right(144)
+
+# Рисуем фигуры в разных позициях
+# Перемещаемся и рисуем квадрат
+t.penup()
+t.goto(-300, 100)
+t.pendown()
+draw_square(100, "red")
+
+# Перемещаемся и рисуем треугольник
+t.penup()
+t.goto(-150, 100)
+t.pendown()
+draw_triangle(100, "blue")
+
+# Перемещаемся и рисуем круг
+t.penup()
+t.goto(0, 100)
+t.pendown()
+draw_circle(50, "green")
+
+# Перемещаемся и рисуем шестиугольник
+t.penup()
+t.goto(150, 100)
+t.pendown()
+draw_polygon(6, 60, "purple")
+
+# Перемещаемся и рисуем звезду
+t.penup()
+t.goto(-300, -100)
+t.pendown()
+draw_star(100, "orange")
+
+# Перемещаемся и рисуем спираль
+def draw_spiral():
+    t.penup()
+    t.goto(150, -100)
+    t.pendown()
+    
+    t.color("brown")
+    length = 5
+    for i in range(50):
+        t.forward(length)
+        t.right(91)  # Не 90 градусов для создания спирали
+        length += 3
+
+draw_spiral()
+
+turtle.done()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Цвета и заливка</h3>
+                    <p>Используем цвета и заливку для создания красивых фигур:</p>
+                    
+                    <div class="code-example">
+<pre><code>import turtle
+
+t = turtle.Turtle()
+t.speed(5)
+
+# Способы задания цветов
+# 1. По имени (английские названия)
+colors_by_name = ["red", "green", "blue", "yellow", "purple", "orange"]
+
+# 2. По RGB значениям (от 0 до 1)
+# turtle.colormode(255)  # Можно использовать значения от 0 до 255
+rgb_colors = [
+    (1, 0, 0),      # Красный
+    (0, 1, 0),      # Зеленый
+    (0, 0, 1),      # Синий
+    (1, 1, 0),      # Желтый
+    (0.5, 0, 0.5),  # Фиолетовый
+    (1, 0.5, 0)     # Оранжевый
+]
+
+# Рисуем разноцветный квадрат
+t.penup()
+t.goto(-200, 200)
+t.pendown()
+
+for i in range(4):
+    t.color(colors_by_name[i])
+    t.forward(100)
+    t.left(90)
+
+# Рисуем закрашенный круг
+def draw_filled_circle(radius, color):
+    t.penup()
+    t.goto(0, 200)
+    t.pendown()
+    
+    t.color(color)
+    t.begin_fill()      # Начинаем заливку
+    t.circle(radius)
+    t.end_fill()        # Заканчиваем заливку
+
+draw_filled_circle(50, "lightblue")
+
+# Градиентный квадрат
+def draw_gradient_square(size):
+    t.penup()
+    t.goto(-200, -100)
+    t.pendown()
+    
+    # Меняем цвет постепенно
+    for i in range(4):
+        # Вычисляем цвет (от черного к красному)
+        red_value = i * 0.25
+        t.color(red_value, 0, 0)
+        
+        # Рисуем сторону
+        t.forward(size)
+        t.left(90)
+        
+        # Увеличиваем толщину пера
+        t.pensize(i + 2)
+
+draw_gradient_square(80)
+
+# Разноцветная спираль
+def draw_colorful_spiral():
+    t.penup()
+    t.goto(100, -100)
+    t.pendown()
+    
+    t.pensize(2)
+    colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+    
+    for i in range(100):
+        # Меняем цвет каждые 10 шагов
+        t.color(colors[i // 10 % len(colors)])
+        t.forward(i * 2)
+        t.right(91)
+
+draw_colorful_spiral()
+
+# Цветочный узор
+def draw_flower():
+    t.penup()
+    t.goto(200, 100)
+    t.pendown()
+    
+    t.pensize(1)
+    
+    for i in range(36):  # 36 лепестков
+        # Меняем цвет лепестков
+        if i % 2 == 0:
+            t.color("pink", "lightpink")
+        else:
+            t.color("lightcoral", "mistyrose")
+        
+        # Рисуем лепесток
+        t.begin_fill()
+        for _ in range(2):
+            t.circle(40, 60)
+            t.left(120)
+        t.end_fill()
+        
+        # Поворачиваем для следующего лепестка
+        t.left(10)
+
+draw_flower()
+
+turtle.done()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Анимации и движение</h3>
+                    <p>Создадим анимации и интерактивные элементы:</p>
+                    
+                    <div class="code-example">
+<pre><code>import turtle
+import time
+import random
+
+screen = turtle.Screen()
+screen.title("Анимации на Turtle")
+screen.bgcolor("black")
+screen.tracer(0)  # Отключаем автообновление для плавной анимации
+
+# 1. Движущаяся черепашка
+moving_turtle = turtle.Turtle()
+moving_turtle.shape("turtle")
+moving_turtle.color("cyan")
+moving_turtle.penup()
+moving_turtle.goto(-300, 0)
+
+# 2. Мигающая звезда
+blinking_star = turtle.Turtle()
+blinking_star.shape("circle")
+blinking_star.color("yellow")
+blinking_star.penup()
+blinking_star.goto(200, 200)
+
+# 3. Вращающийся квадрат
+rotating_square = turtle.Turtle()
+rotating_square.color("magenta")
+rotating_square.penup()
+rotating_square.goto(-200, -200)
+rotating_square.pendown()
+
+# 4. Падающий снег
+snowflakes = []
+for _ in range(50):
+    snowflake = turtle.Turtle()
+    snowflake.shape("circle")
+    snowflake.color("white")
+    snowflake.shapesize(0.5)
+    snowflake.penup()
+    snowflake.goto(random.randint(-400, 400), random.randint(300, 400))
+    snowflake.speed = random.uniform(1, 3)
+    snowflakes.append(snowflake)
+
+# Анимационный цикл
+def animate():
+    frame = 0
+    
+    while True:
+        screen.update()  # Обновляем экран
+        time.sleep(0.03)  # Небольшая задержка для плавности
+        frame += 1
+        
+        # 1. Движение черепашки
+        moving_turtle.forward(3)
+        if moving_turtle.xcor() > 400:
+            moving_turtle.goto(-400, random.randint(-200, 200))
+        
+        # 2. Мигание звезды
+        if frame % 10 == 0:
+            if blinking_star.isvisible():
+                blinking_star.hideturtle()
+            else:
+                blinking_star.showturtle()
+        
+        # 3. Вращение квадрата
+        rotating_square.clear()
+        rotating_square.setheading(frame * 2)  # Поворачиваем квадрат
+        
+        # Рисуем квадрат в новом положении
+        for _ in range(4):
+            rotating_square.forward(50)
+            rotating_square.right(90)
+        
+        # 4. Падающий снег
+        for snowflake in snowflakes:
+            snowflake.sety(snowflake.ycor() - snowflake.speed)
+            
+            # Если снежинка упала, возвращаем ее наверх
+            if snowflake.ycor() < -300:
+                snowflake.goto(random.randint(-400, 400), 300)
+                snowflake.speed = random.uniform(1, 3)
+        
+        # Добавляем случайные вспышки
+        if frame % 20 == 0:
+            flash = turtle.Turtle()
+            flash.shape("circle")
+            flash.color(random.choice(["red", "green", "blue", "yellow"]))
+            flash.penup()
+            flash.goto(random.randint(-350, 350), random.randint(-250, 250))
+            flash.shapesize(random.uniform(0.5, 2))
+            flash.speed = 0
+            
+            # Создаем анимацию исчезновения
+            def fade_out(t):
+                for _ in range(10):
+                    t.shapesize(t.shapesize()[0] * 0.7)
+                    screen.update()
+                    time.sleep(0.05)
+                t.hideturtle()
+                t.clear()
+            
+            # Запускаем анимацию в отдельном потоке
+            import threading
+            threading.Thread(target=fade_out, args=(flash,)).start()
+
+# Создаем интерактивную черепашку
+interactive_turtle = turtle.Turtle()
+interactive_turtle.shape("turtle")
+interactive_turtle.color("lime")
+interactive_turtle.penup()
+interactive_turtle.goto(0, 0)
+
+# Функции для управления
+def move_up():
+    interactive_turtle.sety(interactive_turtle.ycor() + 20)
+
+def move_down():
+    interactive_turtle.sety(interactive_turtle.ycor() - 20)
+
+def move_left():
+    interactive_turtle.setx(interactive_turtle.xcor() - 20)
+
+def move_right():
+    interactive_turtle.setx(interactive_turtle.xcor() + 20)
+
+def change_color():
+    colors = ["red", "green", "blue", "yellow", "purple", "orange"]
+    interactive_turtle.color(random.choice(colors))
+
+def draw_circle():
+    interactive_turtle.pendown()
+    interactive_turtle.circle(30)
+    interactive_turtle.penup()
+
+# Назначаем клавиши управления
+screen.listen()
+screen.onkeypress(move_up, "Up")
+screen.onkeypress(move_down, "Down")
+screen.onkeypress(move_left, "Left")
+screen.onkeypress(move_right, "Right")
+screen.onkeypress(change_color, "c")
+screen.onkeypress(draw_circle, "space")
+
+# Запускаем анимацию в отдельном потоке
+import threading
+animation_thread = threading.Thread(target=animate)
+animation_thread.daemon = True
+animation_thread.start()
+
+turtle.done()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Создание игр на Turtle</h3>
+                    <p>Разработаем простые игры с использованием Turtle:</p>
+                    
+                    <div class="code-example">
+<pre><code>import turtle
+import random
+import time
+
+# ========== ИГРА 1: "Лабиринт" ==========
+def maze_game():
+    screen = turtle.Screen()
+    screen.title("Лабиринт")
+    screen.bgcolor("darkblue")
+    screen.setup(600, 600)
+    
+    # Игрок
+    player = turtle.Turtle()
+    player.shape("turtle")
+    player.color("green")
+    player.penup()
+    player.goto(-250, -250)
+    
+    # Финиш
+    finish = turtle.Turtle()
+    finish.shape("circle")
+    finish.color("gold")
+    finish.penup()
+    finish.goto(250, 250)
+    finish.shapesize(2)
+    
+    # Стены лабиринта
+    walls = []
+    
+    # Вертикальные стены
+    for y in range(-200, 300, 100):
+        wall = turtle.Turtle()
+        wall.shape("square")
+        wall.color("gray")
+        wall.penup()
+        wall.shapesize(stretch_wid=5, stretch_len=0.5)
+        wall.goto(random.randint(-150, 150), y)
+        walls.append(wall)
+    
+    # Горизонтальные стены
+    for x in range(-200, 300, 100):
+        wall = turtle.Turtle()
+        wall.shape("square")
+        wall.color("gray")
+        wall.penup()
+        wall.shapesize(stretch_wid=0.5, stretch_len=5)
+        wall.goto(x, random.randint(-150, 150))
+        walls.append(wall)
+    
+    # Управление
+    def move_up():
+        player.sety(player.ycor() + 10)
+        check_collision()
+        check_win()
+    
+    def move_down():
+        player.sety(player.ycor() - 10)
+        check_collision()
+        check_win()
+    
+    def move_left():
+        player.setx(player.xcor() - 10)
+        check_collision()
+        check_win()
+    
+    def move_right():
+        player.setx(player.xcor() + 10)
+        check_collision()
+        check_win()
+    
+    # Проверка столкновений
+    def check_collision():
+        for wall in walls:
+            if (abs(player.xcor() - wall.xcor()) < 30 and 
+                abs(player.ycor() - wall.ycor()) < 30):
+                # Столкновение - возвращаем игрока назад
+                player.goto(-250, -250)
+                return
+    
+    # Проверка победы
+    def check_win():
+        if (abs(player.xcor() - finish.xcor()) < 20 and 
+            abs(player.ycor() - finish.ycor()) < 20):
+            finish.color("red")
+            player.hideturtle()
+            # Поздравление
+            congrats = turtle.Turtle()
+            congrats.hideturtle()
+            congrats.penup()
+            congrats.goto(0, 0)
+            congrats.color("white")
+            congrats.write("ПОБЕДА!", align="center", font=("Arial", 32, "bold"))
+    
+    # Назначение клавиш
+    screen.listen()
+    screen.onkeypress(move_up, "Up")
+    screen.onkeypress(move_down, "Down")
+    screen.onkeypress(move_left, "Left")
+    screen.onkeypress(move_right, "Right")
+    
+    turtle.done()
+
+# ========== ИГРА 2: "Змейка" ==========
+def snake_game():
+    screen = turtle.Screen()
+    screen.title("Змейка")
+    screen.bgcolor("black")
+    screen.setup(600, 600)
+    screen.tracer(0)
+    
+    # Голова змейки
+    head = turtle.Turtle()
+    head.shape("square")
+    head.color("green")
+    head.penup()
+    head.goto(0, 0)
+    head.direction = "stop"
+    
+    # Еда
+    food = turtle.Turtle()
+    food.shape("circle")
+    food.color("red")
+    food.penup()
+    food.goto(0, 100)
+    
+    # Сегменты змейки
+    segments = []
+    
+    # Счет
+    score = 0
+    score_display = turtle.Turtle()
+    score_display.speed(0)
+    score_display.color("white")
+    score_display.penup()
+    score_display.hideturtle()
+    score_display.goto(0, 260)
+    score_display.write(f"Счет: {score}", align="center", font=("Arial", 24, "normal"))
+    
+    # Функции управления
+    def go_up():
+        if head.direction != "down":
+            head.direction = "up"
+    
+    def go_down():
+        if head.direction != "up":
+            head.direction = "down"
+    
+    def go_left():
+        if head.direction != "right":
+            head.direction = "left"
+    
+    def go_right():
+        if head.direction != "left":
+            head.direction = "right"
+    
+    def move():
+        if head.direction == "up":
+            y = head.ycor()
+            head.sety(y + 20)
+        
+        if head.direction == "down":
+            y = head.ycor()
+            head.sety(y - 20)
+        
+        if head.direction == "left":
+            x = head.xcor()
+            head.setx(x - 20)
+        
+        if head.direction == "right":
+            x = head.xcor()
+            head.setx(x + 20)
+    
+    # Проверка столкновения с едой
+    def check_food_collision():
+        if head.distance(food) < 20:
+            # Перемещаем еду в случайное место
+            x = random.randint(-280, 280)
+            y = random.randint(-280, 280)
+            food.goto(x, y)
+            
+            # Добавляем новый сегмент
+            new_segment = turtle.Turtle()
+            new_segment.shape("square")
+            new_segment.color("lightgreen")
+            new_segment.penup()
+            segments.append(new_segment)
+            
+            # Увеличиваем счет
+            global score
+            score += 10
+            score_display.clear()
+            score_display.write(f"Счет: {score}", align="center", font=("Arial", 24, "normal"))
+    
+    # Движение сегментов
+    def move_segments():
+        # Двигаем сегменты от конца к началу
+        for i in range(len(segments) - 1, 0, -1):
+            x = segments[i-1].xcor()
+            y = segments[i-1].ycor()
+            segments[i].goto(x, y)
+        
+        # Двигаем первый сегмент к голове
+        if len(segments) > 0:
+            x = head.xcor()
+            y = head.ycor()
+            segments[0].goto(x, y)
+    
+    # Проверка столкновений
+    def check_collisions():
+        # Столкновение с границами
+        if (head.xcor() > 290 or head.xcor() < -290 or 
+            head.ycor() > 290 or head.ycor() < -290):
+            game_over()
+        
+        # Столкновение с собственным телом
+        for segment in segments:
+            if segment.distance(head) < 20:
+                game_over()
+    
+    def game_over():
+        time.sleep(1)
+        head.goto(0, 0)
+        head.direction = "stop"
+        
+        # Скрываем сегменты
+        for segment in segments:
+            segment.goto(1000, 1000)
+        
+        segments.clear()
+        
+        # Сбрасываем счет
+        global score
+        score = 0
+        score_display.clear()
+        score_display.write(f"Счет: {score}", align="center", font=("Arial", 24, "normal"))
+        
+        # Сообщение о проигрыше
+        game_over_display = turtle.Turtle()
+        game_over_display.color("red")
+        game_over_display.penup()
+        game_over_display.hideturtle()
+        game_over_display.goto(0, 0)
+        game_over_display.write("ИГРА ОКОНЧЕНА", align="center", font=("Arial", 36, "bold"))
+        time.sleep(2)
+        game_over_display.clear()
+    
+    # Назначение клавиш
+    screen.listen()
+    screen.onkeypress(go_up, "Up")
+    screen.onkeypress(go_down, "Down")
+    screen.onkeypress(go_left, "Left")
+    screen.onkeypress(go_right, "Right")
+    
+    # Главный игровой цикл
+    while True:
+        screen.update()
+        move()
+        check_food_collision()
+        move_segments()
+        check_collisions()
+        time.sleep(0.1)
+
+# ========== ИГРА 3: "Арканоид" ==========
+def arkanoid_game():
+    screen = turtle.Screen()
+    screen.title("Арканоид")
+    screen.bgcolor("black")
+    screen.setup(800, 600)
+    screen.tracer(0)
+    
+    # Платформа
+    paddle = turtle.Turtle()
+    paddle.shape("square")
+    paddle.color("white")
+    paddle.shapesize(stretch_wid=1, stretch_len=5)
+    paddle.penup()
+    paddle.goto(0, -250)
+    
+    # Мяч
+    ball = turtle.Turtle()
+    ball.shape("circle")
+    ball.color("yellow")
+    ball.penup()
+    ball.goto(0, -200)
+    ball.dx = 2
+    ball.dy = -2
+    
+    # Кирпичи
+    bricks = []
+    colors = ["red", "orange", "yellow", "green", "blue"]
+    
+    for row in range(5):
+        for col in range(10):
+            brick = turtle.Turtle()
+            brick.shape("square")
+            brick.color(colors[row])
+            brick.shapesize(stretch_wid=1, stretch_len=2)
+            brick.penup()
+            brick.goto(-350 + col * 70, 200 - row * 30)
+            bricks.append(brick)
+    
+    # Счет
+    score = 0
+    score_display = turtle.Turtle()
+    score_display.speed(0)
+    score_display.color("white")
+    score_display.penup()
+    score_display.hideturtle()
+    score_display.goto(0, 260)
+    score_display.write(f"Счет: {score}", align="center", font=("Arial", 24, "normal"))
+    
+    # Движение платформы
+    def paddle_right():
+        x = paddle.xcor()
+        if x < 350:
+            paddle.setx(x + 20)
+    
+    def paddle_left():
+        x = paddle.xcor()
+        if x > -350:
+            paddle.setx(x - 20)
+    
+    # Главный игровой цикл
+    def game_loop():
+        nonlocal score
+        
+        # Двигаем мяч
+        ball.setx(ball.xcor() + ball.dx)
+        ball.sety(ball.ycor() + ball.dy)
+        
+        # Отскок от стен
+        if ball.xcor() > 390:
+            ball.setx(390)
+            ball.dx *= -1
+        
+        if ball.xcor() < -390:
+            ball.setx(-390)
+            ball.dx *= -1
+        
+        if ball.ycor() > 290:
+            ball.sety(290)
+            ball.dy *= -1
+        
+        # Отскок от платформы
+        if (ball.ycor() < -240 and ball.ycor() > -250 and 
+            ball.xcor() < paddle.xcor() + 50 and ball.xcor() > paddle.xcor() - 50):
+            ball.sety(-240)
+            ball.dy *= -1
+        
+        # Проверка столкновения с кирпичами
+        for brick in bricks:
+            if (ball.distance(brick) < 30 and brick.isvisible()):
+                brick.hideturtle()
+                ball.dy *= -1
+                score += 10
+                score_display.clear()
+                score_display.write(f"Счет: {score}", align="center", font=("Arial", 24, "normal"))
+                
+                # Проверка победы
+                if all(not brick.isvisible() for brick in bricks):
+                    win_display = turtle.Turtle()
+                    win_display.color("gold")
+                    win_display.penup()
+                    win_display.hideturtle()
+                    win_display.goto(0, 0)
+                    win_display.write("ПОБЕДА!", align="center", font=("Arial", 48, "bold"))
+                    return
+        
+        # Проверка проигрыша
+        if ball.ycor() < -290:
+            game_over_display = turtle.Turtle()
+            game_over_display.color("red")
+            game_over_display.penup()
+            game_over_display.hideturtle()
+            game_over_display.goto(0, 0)
+            game_over_display.write("ИГРА ОКОНЧЕНА", align="center", font=("Arial", 48, "bold"))
+            return
+        
+        screen.update()
+        screen.ontimer(game_loop, 10)
+    
+    # Назначение клавиш
+    screen.listen()
+    screen.onkeypress(paddle_right, "Right")
+    screen.onkeypress(paddle_left, "Left")
+    
+    # Запуск игры
+    game_loop()
+    turtle.done()
+
+# Меню выбора игры
+def game_menu():
+    screen = turtle.Screen()
+    screen.title("Игры на Turtle")
+    screen.bgcolor("darkblue")
+    screen.setup(400, 300)
+    
+    menu = turtle.Turtle()
+    menu.hideturtle()
+    menu.penup()
+    menu.color("white")
+    
+    menu.goto(0, 100)
+    menu.write("ВЫБЕРИТЕ ИГРУ", align="center", font=("Arial", 24, "bold"))
+    
+    menu.goto(0, 50)
+    menu.write("1. Лабиринт", align="center", font=("Arial", 18, "normal"))
+    
+    menu.goto(0, 20)
+    menu.write("2. Змейка", align="center", font=("Arial", 18, "normal"))
+    
+    menu.goto(0, -10)
+    menu.write("3. Арканоид", align="center", font=("Arial", 18, "normal"))
+    
+    menu.goto(0, -50)
+    menu.write("Нажмите цифру 1-3", align="center", font=("Arial", 14, "italic"))
+    
+    def start_game(game_number):
+        screen.clear()
+        if game_number == 1:
+            maze_game()
+        elif game_number == 2:
+            snake_game()
+        elif game_number == 3:
+            arkanoid_game()
+    
+    screen.onkey(lambda: start_game(1), "1")
+    screen.onkey(lambda: start_game(2), "2")
+    screen.onkey(lambda: start_game(3), "3")
+    
+    screen.listen()
+    turtle.done()
+
+# Запускаем меню игр
+game_menu()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="task-box">
+                    <h4><i class="fas fa-tasks"></i> Практическое задание: "Цифровой художник"</h4>
+                    <p>Создайте программу для рисования с использованием библиотеки Turtle.</p>
+                    
+                    <p><strong>Требования:</strong></p>
+                    <ol>
+                        <li>Создайте интерактивный холст для рисования:
+                            <ul>
+                                <li>Возможность рисования мышью</li>
+                                <li>Выбор цвета из палитры</li>
+                                <li>Изменение толщины кисти</li>
+                                <li>Разные формы кистей (круг, квадрат, звезда)</li>
+                            </ul>
+                        </li>
+                        <li>Реализуйте инструменты:
+                            <ul>
+                                <li>Кисть для свободного рисования</li>
+                                <li>Линия по точкам</li>
+                                <li>Геометрические фигуры (круг, квадрат, треугольник)</li>
+                                <li>Заливка цветом</li>
+                                <li>Ластик</li>
+                                <li>Текст</li>
+                            </ul>
+                        </li>
+                        <li>Добавьте функциональность:
+                            <ul>
+                                <li>Сохранить рисунок в файл</li>
+                                <li>Загрузить рисунок из файла</li>
+                                <li>Отменить/повторить действия</li>
+                                <li>Очистить холст</li>
+                            </ul>
+                        </li>
+                        <li>Создайте специальные эффекты:
+                            <ul>
+                                <li>Симметричное рисование</li>
+                                <li>Мозаика/паттерны</li>
+                                <li>Градиенты</li>
+                                <li>Штампы (готовые рисунки)</li>
+                            </ul>
+                        </li>
+                        <li>Добавьте обучение:
+                            <ul>
+                                <li>Пошаговые уроки рисования</li>
+                                <li>Трафареты для обводки</li>
+                                <li>Создание анимаций</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    
+                    <p><strong>Пример интерфейса:</strong></p>
+                    <div class="code-example">
+<pre><code>=== ЦИФРОВОЙ ХУДОЖНИК ===
+
+[Холст 800x600]                  [Панель инструментов]
+                                 1. Кисть (B)
+                                 2. Линия (L)
+                                 3. Круг (C)
+                                 4. Квадрат (R)
+                                 5. Заливка (F)
+                                 6. Ластик (E)
+                                 7. Текст (T)
+
+[Палитра цветов]                [Настройки кисти]
+🔴 🟠 🟡 🟢 🔵 🟣 ⚫ ⚪          Толщина: ████░░░░ 4
+                                 Форма: ○ ▢ ☆
+
+[Файл] [Правка] [Эффекты] [Справка]
+- Сохранить (Ctrl+S)
+- Загрузить (Ctrl+O)
+- Отменить (Ctrl+Z)
+- Очистить (Ctrl+N)
+- Симметрия
+- Градиент
+- Штампы</code></pre>
+                    </div>
+                    
+                    <p><strong>Расширенные возможности:</strong></p>
+                    <ol>
+                        <li>Добавьте слои как в Photoshop</li>
+                        <li>Реализуйте фильтры (размытие, повышение резкости)</li>
+                        <li>Создайте историю изменений с превью</li>
+                        <li>Добавьте возможность экспорта в PNG/SVG</li>
+                        <li>Создайте галерею готовых работ</li>
+                        <li>Добавьте режим "раскраски по номерам"</li>
+                    </ol>
+                    
+                    <p><strong>Подсказки:</strong></p>
+                    <ul>
+                        <li>Используйте <code>onscreenclick()</code> для обработки кликов мыши</li>
+                        <li>Для отслеживания движения мыши используйте <code>ondrag()</code></li>
+                        <li>Храните историю действий в списке для отмены/повтора</li>
+                        <li>Используйте модуль <code>pickle</code> для сохранения/загрузки</li>
+                        <li>Создайте отдельный класс для каждого инструмента</li>
+                        <li>Используйте наследование для общих функций инструментов</li>
+                    </ul>
+                </div>
+                
+                <div class="lesson-tips">
+                    <h4><i class="fas fa-star"></i> Полезные советы по Turtle</h4>
+                    <ul>
+                        <li>Используйте <code>tracer(0)</code> и <code>update()</code> для плавной анимации</li>
+                        <li>Для сложных проектов создавайте отдельные классы для объектов</li>
+                        <li>Используйте <code>onscreenclick()</code> для интерактивности</li>
+                        <li>Храните состояния объектов в словарях или списках</li>
+                        <li>Для игр используйте главный игровой цикл</li>
+                        <li>Используйте <code>time.sleep()</code> для контроля скорости</li>
+                        <li>Экспериментируйте с разными формами и размерами</li>
+                        <li>Комбинируйте несколько черепашек для сложных сцен</li>
+                        <li>Используйте RGB цвета для большего контроля</li>
+                        <li>Не забывайте вызывать <code>turtle.done()</code> в конце</li>
+                    </ul>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <a href="lesson12.html" class="nav-btn prev">
+                        <i class="fas fa-arrow-left"></i> Предыдущий урок
+                    </a>
+                    <a href="lesson14.html" class="nav-btn next">
+                        Следующий урок: Trinket <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="index.html" class="active">Python</a></li>
+                        <li><a href="../scratch/index.html">Scratch</a></li>
+                        <li><a href="../appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Демонстрация Turtle в браузере
+        let turtleX = 150;
+        let turtleY = 150;
+        let turtleAngle = 0;
+        let isPenDown = true;
+        let ctx;
+        
+        function initTurtle() {
+            const canvas = document.getElementById('turtlePath');
+            canvas.width = 300;
+            canvas.height = 300;
+            ctx = canvas.getContext('2d');
+            ctx.strokeStyle = '#4a90e2';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            
+            const turtle = document.getElementById('turtle');
+            turtle.style.transform = `translate(-20px, -20px) rotate(${turtleAngle}deg)`;
+        }
+        
+        function moveTurtle(direction) {
+            const turtle = document.getElementById('turtle');
+            const step = 100;
+            
+            if (direction === 'forward') {
+                const rad = turtleAngle * Math.PI / 180;
+                turtleX += Math.cos(rad) * step;
+                turtleY += Math.sin(rad) * step;
+            } else if (direction === 'backward') {
+                const rad = turtleAngle * Math.PI / 180;
+                turtleX -= Math.cos(rad) * step;
+                turtleY -= Math.sin(rad) * step;
+            }
+            
+            // Ограничиваем движение
+            turtleX = Math.max(20, Math.min(280, turtleX));
+            turtleY = Math.max(20, Math.min(280, turtleY));
+            
+            // Рисуем линию, если перо опущено
+            if (isPenDown && ctx) {
+                ctx.beginPath();
+                ctx.moveTo(parseFloat(turtle.style.left) || 150, 
+                          parseFloat(turtle.style.top) || 150);
+                ctx.lineTo(turtleX, turtleY);
+                ctx.stroke();
+            }
+            
+            // Обновляем позицию черепашки
+            turtle.style.left = turtleX + 'px';
+            turtle.style.top = turtleY + 'px';
+        }
+        
+        function rotateTurtle(direction) {
+            const turtle = document.getElementById('turtle');
+            
+            if (direction === 'left') {
+                turtleAngle -= 90;
+            } else if (direction === 'right') {
+                turtleAngle += 90;
+            }
+            
+            // Нормализуем угол
+            turtleAngle = ((turtleAngle % 360) + 360) % 360;
+            
+            turtle.style.transform = `translate(-20px, -20px) rotate(${turtleAngle}deg)`;
+        }
+        
+        function clearCanvas() {
+            if (ctx) {
+                ctx.clearRect(0, 0, 300, 300);
+            }
+            
+            // Возвращаем черепашку в центр
+            turtleX = 150;
+            turtleY = 150;
+            turtleAngle = 0;
+            
+            const turtle = document.getElementById('turtle');
+            turtle.style.left = '150px';
+            turtle.style.top = '150px';
+            turtle.style.transform = `translate(-20px, -20px) rotate(0deg)`;
+        }
+        
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', initTurtle);
+    </script>
+    <script src="../script.js"></script>
+</body>
+</html>

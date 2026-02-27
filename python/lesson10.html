@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 10: Модули и библиотеки | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="python.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .module-visual {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .module-card {
+            background: white;
+            border: 2px solid var(--python-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .module-icon {
+            font-size: 2rem;
+            color: var(--python-color);
+            margin-bottom: 10px;
+        }
+        
+        .import-tree {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .library-category {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid var(--python-color);
+            background: #f0f7ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="python-header">
+        <div class="container">
+            <h1><i class="fab fa-python"></i> Урок 10: Модули и библиотеки</h1>
+            <p class="section-subtitle">Используем готовый код и расширяем возможности Python</p>
+        </div>
+    </section>
+
+    <section class="materials-section">
+        <div class="container">
+            <div class="lesson-content">
+                <div class="lesson-step">
+                    <h3>Что такое модули и библиотеки?</h3>
+                    <p>Модуль — это файл с кодом Python. Библиотека (пакет) — это набор модулей.</p>
+                    
+                    <div class="module-visual">
+                        <div class="module-card">
+                            <div class="module-icon"><i class="fas fa-file-code"></i></div>
+                            <div><strong>Модуль</strong></div>
+                            <div>Один файл .py</div>
+                        </div>
+                        <div class="module-card">
+                            <div class="module-icon"><i class="fas fa-folder"></i></div>
+                            <div><strong>Пакет</strong></div>
+                            <div>Папка с модулями</div>
+                        </div>
+                        <div class="module-card">
+                            <div class="module-icon"><i class="fas fa-book"></i></div>
+                            <div><strong>Библиотека</strong></div>
+                            <div>Набор пакетов</div>
+                        </div>
+                        <div class="module-card">
+                            <div class="module-icon"><i class="fas fa-box-open"></i></div>
+                            <div><strong>Фреймворк</strong></div>
+                            <div>Готовое решение</div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-example">
+<pre><code># Python поставляется с множеством встроенных модулей
+# Их можно использовать без установки
+
+# math - математические функции
+import math
+print(math.sqrt(25))      # 5.0
+print(math.pi)            # 3.141592653589793
+print(math.factorial(5))  # 120
+
+# datetime - работа с датами и временем
+import datetime
+сегодня = datetime.date.today()
+print(сегодня)            # 2023-10-15
+print(сегодня.year)       # 2023
+print(сегодня.month)      # 10
+
+# random - генерация случайных чисел
+import random
+print(random.randint(1, 10))      # Случайное число от 1 до 10
+print(random.choice(['a', 'b', 'c']))  # Случайный выбор
+
+# os - работа с операционной системой
+import os
+print(os.getcwd())        # Текущая рабочая директория
+print(os.listdir('.'))    # Список файлов в директории</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Способы импорта модулей</h3>
+                    <p>Существует несколько способов импорта модулей:</p>
+                    
+                    <div class="import-tree">
+                        <code>my_project/</code><br>
+                        <code>├── main.py</code><br>
+                        <code>├── utils.py</code><br>
+                        <code>├── math_operations.py</code><br>
+                        <code>└── data/</code><br>
+                        <code>    ├── __init__.py</code><br>
+                        <code>    └── processor.py</code>
+                    </div>
+                    
+                    <div class="code-example">
+<pre><code># 1. Импорт всего модуля
+import math
+результат = math.sqrt(16)  # Всегда указываем имя модуля
+
+# 2. Импорт с псевдонимом (alias)
+import math as m
+результат = m.sqrt(16)     # Используем короткое имя
+
+# 3. Импорт конкретных функций
+from math import sqrt, pi
+результат = sqrt(16)       # Можно использовать без math.
+print(pi)                  # Также без math.
+
+# 4. Импорт всех функций (не рекомендуется!)
+from math import *
+результат = sqrt(16)       # Работает, но может быть конфликт имен
+
+# 5. Импорт из пакетов
+# Для пакета data с файлом processor.py
+from data.processor import обработать_данные
+# или
+import data.processor as dp
+
+# 6. Относительный импорт (внутри пакетов)
+# В файле data/processor.py:
+# from . import другой_модуль  # Точка означает текущий пакет
+# from .. import родительский_пакет  # Две точки - родительский пакет</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Создание собственных модулей</h3>
+                    <p>Любой файл .py можно использовать как модуль:</p>
+                    
+                    <div class="code-example">
+<pre><code># Файл geometry.py - наш собственный модуль
+"""
+Модуль для геометрических вычислений
+Автор: Кванториум 22
+"""
+
+PI = 3.14159
+
+def площадь_круга(радиус):
+    """Вычисляет площадь круга"""
+    return PI * радиус ** 2
+
+def площадь_прямоугольника(длина, ширина):
+    """Вычисляет площадь прямоугольника"""
+    return длина * ширина
+
+def объем_куба(сторона):
+    """Вычисляет объем куба"""
+    return сторона ** 3
+
+# Файл main.py - основной файл программы
+import geometry
+
+# Используем функции из нашего модуля
+радиус = 5
+площадь = geometry.площадь_круга(радиус)
+print(f"Площадь круга радиусом {радиус}: {площадь:.2f}")
+
+# Импорт конкретных функций
+from geometry import площадь_прямоугольника, объем_куба
+
+длина = 10
+ширина = 5
+площадь_прям = площадь_прямоугольника(длина, ширина)
+print(f"Площадь прямоугольника {длина}x{ширина}: {площадь_прям}")
+
+# Проверка, является ли файл основным модулем
+if __name__ == "__main__":
+    # Этот код выполнится только при прямом запуске geometry.py
+    print("Тестирование модуля geometry...")
+    print(f"Площадь круга радиусом 3: {площадь_круга(3):.2f}")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Создание пакетов</h3>
+                    <p>Пакет — это директория с модулями и файлом __init__.py:</p>
+                    
+                    <div class="code-example">
+<pre><code># Структура пакета mypackage/
+# mypackage/
+# ├── __init__.py
+# ├── module1.py
+# ├── module2.py
+# └── subpackage/
+#     ├── __init__.py
+#     └── module3.py
+
+# Файл mypackage/__init__.py
+"""
+Пакет mypackage для демонстрации
+"""
+
+__version__ = "1.0.0"
+__author__ = "Кванториум 22"
+
+# Можно определить, что импортировать при "from mypackage import *"
+__all__ = ['module1', 'module2']
+
+# Файл mypackage/module1.py
+def приветствие():
+    return "Привет из module1!"
+
+class Калькулятор:
+    def сложить(self, a, b):
+        return a + b
+
+# Файл mypackage/module2.py
+def прощание():
+    return "Пока из module2!"
+
+# Основная программа
+from mypackage import module1
+from mypackage.module2 import прощание
+import mypackage.subpackage.module3 as mod3
+
+print(module1.приветствие())  # Привет из module1!
+print(прощание())            # Пока из module2!
+
+калькулятор = module1.Калькулятор()
+print(калькулятор.сложить(5, 3))  # 8
+
+# Импорт из подпакета
+результат = mod3.функция_из_подпакета()</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Встроенные библиотеки Python</h3>
+                    <p>Python включает множество полезных библиотек "из коробки":</p>
+                    
+                    <div class="library-category">
+                        <h4><i class="fas fa-calculator"></i> Математические</h4>
+                        <p><code>math</code>, <code>decimal</code>, <code>fractions</code>, <code>statistics</code>, <code>random</code></p>
+                    </div>
+                    
+                    <div class="library-category">
+                        <h4><i class="fas fa-calendar-alt"></i> Дата и время</h4>
+                        <p><code>datetime</code>, <code>time</code>, <code>calendar</code></p>
+                    </div>
+                    
+                    <div class="library-category">
+                        <h4><i class="fas fa-file"></i> Файлы и ОС</h4>
+                        <p><code>os</code>, <code>sys</code>, <code>pathlib</code>, <code>shutil</code>, <code>glob</code></p>
+                    </div>
+                    
+                    <div class="library-category">
+                        <h4><i class="fas fa-code"></i> Разработка</h4>
+                        <p><code>json</code>, <code>csv</code>, <code>re</code> (регулярные выражения), <code>itertools</code></p>
+                    </div>
+                    
+                    <div class="code-example">
+<pre><code># Примеры использования встроенных библиотек
+
+# statistics - статистические функции
+import statistics
+данные = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(f"Среднее: {statistics.mean(данные)}")
+print(f"Медиана: {statistics.median(данные)}")
+print(f"Стандартное отклонение: {statistics.stdev(данные):.2f}")
+
+# collections - специальные коллекции
+from collections import Counter, defaultdict, deque
+
+# Counter - подсчет элементов
+слова = ["яблоко", "банан", "яблоко", "апельсин", "банан", "яблоко"]
+счетчик = Counter(слова)
+print(f"Яблок: {счетчик['яблоко']}")  # 3
+print(f"Все счетчики: {счетчик}")
+
+# defaultdict - словарь со значением по умолчанию
+по_классам = defaultdict(list)
+по_классам["7А"].append("Анна")
+по_классам["7А"].append("Иван")
+print(f"7А класс: {по_классам['7А']}")  # ['Анна', 'Иван']
+print(f"7Б класс: {по_классам['7Б']}")  # [] (пустой список)
+
+# itertools - итераторы и комбинаторика
+from itertools import permutations, combinations, product
+
+буквы = ['A', 'B', 'C']
+print("Все перестановки из 2 букв:")
+for p in permutations(буквы, 2):
+    print(p)
+
+print("\nВсе сочетания из 2 букв:")
+for c in combinations(буквы, 2):
+    print(c)
+
+# re - регулярные выражения
+import re
+текст = "Телефоны: +7 999 123-45-67, 8-800-555-35-35"
+паттерн = r'\d[\d\s\-\(\)]+'
+номера = re.findall(паттерн, текст)
+print(f"Найденные номера: {номера}")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Установка внешних библиотек (pip)</h3>
+                    <p>pip — менеджер пакетов Python для установки библиотек из интернета.</p>
+                    
+                    <div class="code-example">
+<pre><code># Команды в терминале/командной строке:
+
+# Установка библиотеки
+# pip install имя_библиотеки
+
+# Установка конкретной версии
+# pip install имя_библиотеки==версия
+
+# Установка из файла requirements.txt
+# pip install -r requirements.txt
+
+# Просмотр установленных пакетов
+# pip list
+
+# Поиск пакетов
+# pip search "ключевые слова"
+
+# Обновление пакета
+# pip install --upgrade имя_библиотеки
+
+# Удаление пакета
+# pip uninstall имя_библиотеки
+
+# Примеры популярных библиотек
+# pip install requests      # HTTP запросы
+# pip install beautifulsoup4 # Парсинг HTML
+# pip install numpy         # Научные вычисления
+# pip install pandas        # Анализ данных
+# pip install matplotlib    # Графики
+# pip install pygame        # Создание игр
+# pip install flask         # Веб-фреймворк
+
+# Пример requirements.txt
+# requests==2.28.1
+# beautifulsoup4==4.11.1
+# numpy>=1.21.0
+# matplotlib~=3.5.0</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Популярные внешние библиотеки</h3>
+                    <p>Тысячи библиотек решают самые разные задачи:</p>
+                    
+                    <div class="code-example">
+<pre><code># requests - работа с HTTP
+import requests
+
+# Отправка GET запроса
+ответ = requests.get("https://api.github.com")
+print(f"Статус: {ответ.status_code}")  # 200
+print(f"Тип контента: {ответ.headers['content-type']}")  # application/json
+
+# Загрузка данных с API
+ответ = requests.get("https://jsonplaceholder.typicode.com/posts/1")
+данные = ответ.json()
+print(f"Заголовок: {данные['title']}")
+
+# beautifulsoup - парсинг HTML
+from bs4 import BeautifulSoup
+
+html = """
+<html>
+<head><title>Пример страницы</title></head>
+<body>
+<h1>Заголовок</h1>
+<p class="text">Первый абзац</p>
+<p>Второй абзац</p>
+<a href="https://example.com">Ссылка</a>
+</body>
+</html>
+"""
+
+soup = BeautifulSoup(html, 'html.parser')
+print(f"Заголовок: {soup.title.text}")
+print(f"Первый абзац: {soup.find('p', class_='text').text}")
+
+# numpy - численные вычисления
+import numpy as np
+
+# Создание массивов
+массив = np.array([1, 2, 3, 4, 5])
+матрица = np.array([[1, 2, 3], [4, 5, 6]])
+
+print(f"Массив: {массив}")
+print(f"Матрица:\n{матрица}")
+print(f"Сумма: {np.sum(матрица)}")
+print(f"Среднее: {np.mean(матрица)}")
+
+# pandas - анализ данных
+import pandas as pd
+
+# Создание DataFrame
+данные = {
+    'Имя': ['Анна', 'Иван', 'Мария'],
+    'Возраст': [12, 13, 12],
+    'Оценка': [5, 4, 5]
+}
+df = pd.DataFrame(данные)
+print(f"DataFrame:\n{df}")
+print(f"\nСредний возраст: {df['Возраст'].mean()}")
+print(f"Максимальная оценка: {df['Оценка'].max()}")</code></pre>
+                </div>
+                
+                <div class="tip-box">
+                    <h4><i class="fas fa-lightbulb"></i> Virtual Environments (Виртуальные окружения)</h4>
+                    <p>Виртуальные окружения позволяют изолировать зависимости разных проектов. Создаются с помощью <code>venv</code>:</p>
+<pre><code># Создание виртуального окружения
+python -m venv venv
+
+# Активация (Windows)
+venv\Scripts\activate
+
+# Активация (macOS/Linux)
+source venv/bin/activate
+
+# Деактивация
+deactivate</code></pre>
+                </div>
+            </div>
+            
+            <div class="lesson-step">
+                <h3>Создание и публикация собственных пакетов</h3>
+                <p>Вы можете создать свой пакет и опубликовать его на PyPI:</p>
+                
+                <div class="code-example">
+<pre><code># Структура проекта для публикации
+# mypackage/
+# ├── mypackage/
+# │   ├── __init__.py
+# │   └── main.py
+# ├── tests/
+# │   └── test_mypackage.py
+# ├── setup.py
+# ├── README.md
+# ├── LICENSE
+# └── requirements.txt
+
+# Файл setup.py
+from setuptools import setup, find_packages
+
+setup(
+    name='mypackage',
+    version='1.0.0',
+    author='Кванториум 22',
+    description='Пример пакета для обучения',
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
+    url='https://github.com/username/mypackage',
+    packages=find_packages(),
+    install_requires=[
+        'requests>=2.0.0',
+    ],
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+    ],
+    python_requires='>=3.6',
+)
+
+# Команды для публикации
+# Установка инструментов
+# pip install setuptools wheel twine
+
+# Сборка пакета
+# python setup.py sdist bdist_wheel
+
+# Проверка пакета
+# twine check dist/*
+
+# Загрузка на Test PyPI (для тестирования)
+# twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+# Загрузка на PyPI (окончательная)
+# twine upload dist/*
+
+# Установка вашего пакета
+# pip install mypackage</code></pre>
+                </div>
+            </div>
+            
+            <div class="task-box">
+                <h4><i class="fas fa-tasks"></i> Практическое задание: "Модульная игра"</h4>
+                <p>Создайте игру с использованием модулей и сторонних библиотек.</p>
+                
+                <p><strong>Требования:</strong></p>
+                <ol>
+                    <li>Создайте структуру проекта:
+                        <ul>
+                            <li>Основной модуль игры</li>
+                            <li>Модуль персонажей</li>
+                            <li>Модуль предметов и инвентаря</li>
+                            <li>Модуль локаций</li>
+                            <li>Модуль боевой системы</li>
+                            <li>Модуль сохранения игры</li>
+                        </ul>
+                    </li>
+                    <li>Используйте сторонние библиотеки:
+                        <ul>
+                            <li><code>colorama</code> или <code>termcolor</code> для цветного вывода</li>
+                            <li><code>pygame</code> или <code>curses</code> для графического интерфейса (опционально)</li>
+                            <li><code>json</code> для сохранения игры</li>
+                            <li><code>random</code> для случайных событий</li>
+                        </ul>
+                    </li>
+                    <li>Реализуйте систему плагинов:
+                        <ul>
+                            <li>Возможность добавления новых персонажей через отдельные файлы</li>
+                            <li>Загрузка локаций из JSON файлов</li>
+                            <li>Динамическая загрузка модулей</li>
+                        </ul>
+                    </li>
+                    <li>Создайте установочный файл setup.py</li>
+                    <li>Напишите документацию для вашего пакета</li>
+                </ol>
+                
+                <p><strong>Пример структуры:</strong></p>
+                <div class="code-example">
+<pre><code>my_game/
+├── game/
+│   ├── __init__.py
+│   ├── main.py          # Основная логика игры
+│   ├── character.py     # Классы персонажей
+│   ├── inventory.py     # Инвентарь и предметы
+│   ├── location.py      # Локации и карта
+│   ├── battle.py        # Боевая система
+│   └── save.py          # Сохранение/загрузка
+├── data/
+│   ├── characters.json  # Данные персонажей
+│   ├── items.json       # Данные предметов
+│   └── locations.json   # Данные локаций
+├── plugins/
+│   ├── __init__.py
+│   └── custom_character.py  # Пример плагина
+├── tests/               # Тесты
+├── requirements.txt     # Зависимости
+├── setup.py            # Файл установки
+└── README.md           # Документация</code></pre>
+                </div>
+                
+                <p><strong>Пример работы программы:</strong></p>
+                <div class="code-example">
+<pre><code>=== ТЕКСТОВАЯ RPG ИГРА ===
+
+Добро пожаловать, герой!
+Выберите класс:
+1. Воин (сила: 10, ловкость: 5)
+2. Маг (сила: 3, ловкость: 7, мана: 10)
+3. Лучник (сила: 6, ловкость: 9)
+
+Ваш выбор: 2
+
+Отлично! Вы маг по имени Мерлин.
+Вы находитесь в стартовой деревне.
+
+Доступные действия:
+1. Осмотреться
+2. Открыть инвентарь
+3. Переместиться
+4. Сохранить игру
+5. Выход
+
+Выберите действие: 1
+
+Вы видите:
+- Торговца (покупает/продает предметы)
+- Таверну (можно отдохнуть)
+- Ворота (ведут в темный лес)
+
+Загружен плагин: Новый класс 'Некромант'
+Загружена новая локация: 'Подземелье дракона'</code></pre>
+                </div>
+                
+                <p><strong>Подсказки:</strong></p>
+                <ul>
+                    <li>Используйте <code>__init__.py</code> для инициализации пакета</li>
+                    <li>Для динамической загрузки модулей используйте <code>importlib</code></li>
+                    <li>Создайте базовые классы для персонажей и предметов</li>
+                    <li>Используйте декораторы для регистрации плагинов</li>
+                    <li>Добавьте обработку ошибок при загрузке модулей</li>
+                    <li>Используйте logging для отладки</li>
+                    <li>Создайте виртуальное окружение для проекта</li>
+                </ul>
+            </div>
+            
+            <div class="lesson-tips">
+                <h4><i class="fas fa-star"></i> Полезные советы</h4>
+                <ul>
+                    <li>Давайте модулям понятные имена в snake_case</li>
+                    <li>Всегда добавляйте документацию (docstrings)</li>
+                    <li>Используйте виртуальные окружения для каждого проекта</li>
+                    <li>Храните зависимости в requirements.txt</li>
+                    <li>Разделяйте код на логические модули</li>
+                    <li>Избегайте циклических импортов</li>
+                    <li>Используйте <code>if __name__ == "__main__"</code> для тестового кода</li>
+                    <li>Пишите тесты для ваших модулей</li>
+                    <li>Проверяйте совместимость версий библиотек</li>
+                </ul>
+            </div>
+            
+            <div class="navigation-buttons">
+                <a href="lesson9.html" class="nav-btn prev">
+                    <i class="fas fa-arrow-left"></i> Предыдущий урок
+                </a>
+                <a href="lesson11.html" class="nav-btn next">
+                    Следующий урок: ООП <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="index.html" class="active">Python</a></li>
+                        <li><a href="../scratch/index.html">Scratch</a></li>
+                        <li><a href="../appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

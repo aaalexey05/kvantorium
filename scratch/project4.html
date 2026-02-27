@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проект 4: Лабиринт | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="scratch.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="scratch-header">
+        <div class="container">
+            <h1><i class="fas fa-maze"></i> Проект 4: Игра-лабиринт</h1>
+            <p class="section-subtitle">Создай сложный лабиринт с ловушками и сокровищами</p>
+        </div>
+    </section>
+
+    <section class="tutorial">
+        <div class="container tutorial-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Основная идея игры</h3>
+                <div class="step-content">
+                    <p>Мы создадим игру-лабиринт, где игрок должен добраться от старта до финиша, собирая по пути сокровища и избегая ловушек.</p>
+                    
+                    <p><strong>Основные элементы:</strong></p>
+                    <ul>
+                        <li>Игрок (управляется стрелками)</li>
+                        <li>Стены лабиринта</li>
+                        <li>Сокровища (монеты, драгоценности)</li>
+                        <li>Ловушки (шипы, враги)</li>
+                        <li>Врата на следующий уровень</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <h4><i class="fas fa-gamepad"></i> Механика</h4>
+                        <p>Игрок собирает сокровища, набирает очки и пытается пройти несколько уровней лабиринта с увеличивающейся сложностью.</p>
+                    </div>
+                    
+                    <img src="https://via.placeholder.com/800x300/4CAF50/FFFFFF?text=Схема+лабиринта+с+разными+уровнями" alt="Схема лабиринта" class="screenshot">
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Создаем стены лабиринта</h3>
+                <div class="step-content">
+                    <p><strong>Способ 1: Используем спрайты-стены</strong></p>
+                    
+                    <div class="scratch-code">
+<pre>// Код для игрока
+когда щёлкнут по зёленому флагу
+перейти в x: (-180) y: (0)  // Стартовая позиция
+установить размер (30) %
+
+повтори всегда
+  если нажата клавиша [стрелка вверх v] тогда
+    изменить y на (5)
+    если <касается цвета [#000000] ?> тогда  // Черный цвет - стены
+      изменить y на (-5)  // Откатываем движение
+    конец
+  конец
+  
+  // Аналогично для других направлений
+конец</pre>
+                    </div>
+                    
+                    <p><strong>Как создать стены:</strong></p>
+                    <ol>
+                        <li>Нарисуйте черные стены прямо на фоне (редактор фонов)</li>
+                        <li>Или создайте отдельный спрайт "Стена" черного цвета</li>
+                        <li>Для сложных лабиринтов лучше рисовать стены на фоне</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Добавляем сокровища</h3>
+                <div class="step-content">
+                    <p>Создаем монеты, которые игрок должен собрать:</p>
+                    
+                    <div class="scratch-code">
+<pre>// Код для монеты
+когда щёлкнут по зёленому флагу
+показаться
+установить размер (20) %
+перейти в x: (0) y: (100)  // Позиция монеты
+
+// Код для игрока (дополнение)
+повтори всегда
+  если <касается [Монета v] ?> тогда
+    передать [собрал монету v] и ждать
+    играть звук [Coin v] до конца
+    спрятаться
+    ждать (5) секунд
+    показаться
+  конец
+конец
+
+// Код для подсчета очков
+когда щёлкнут по зёленому флагу
+установить [Очки v] в (0)
+
+когда я получу [собрал монету v]
+изменить [Очки v] на (10)</pre>
+                    </div>
+                    
+                    <p><strong>Создайте несколько монет в разных местах лабиринта!</strong></p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Добавляем врагов и ловушки</h3>
+                <div class="step-content">
+                    <p>Создаем движущихся врагов и статичные ловушки:</p>
+                    
+                    <div class="scratch-code">
+<pre>// Код для врага (движется по горизонтали)
+когда щёлкнут по зёленому флагу
+показаться
+установить размер (25) %
+перейти в x: (-150) y: (50)
+
+повтори всегда
+  повторить (30) раз
+    изменить x на (5)
+    если <касается цвета [#000000] ?> тогда
+      изменить x на (-5)
+      повернуться в направлении (90)  // Поворачиваем
+    конец
+  конец
+  
+  повторить (30) раз
+    изменить x на (-5)
+    если <касается цвета [#000000] ?> тогда
+      изменить x на (5)
+      повернуться в направлении (90)
+    конец
+  конец
+конец
+
+// Код для игрока (дополнение - проверка столкновения)
+повтори всегда
+  если <касается [Враг v] ?> тогда
+    изменить [Жизни v] на (-1)
+    играть звук [Hurt v] до конца
+    перейти в x: (-180) y: (0)  // Возвращаем к началу
+  конец
+конец</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <h3>Создаем несколько уровней</h3>
+                <div class="step-content">
+                    <p>Добавим возможность проходить несколько уровней:</p>
+                    
+                    <div class="scratch-code">
+<pre>// Создаем переменные
+Уровень = 1
+Всего_уровней = 3
+
+// Код для врат на следующий уровень
+когда щёлкнут по зёленому флагу
+показаться
+перейти в x: (180) y: (0)  // Выход в правой части
+
+когда я получу [начать уровень v]
+показаться
+
+// Код для игрока (когда достиг выхода)
+повтори всегда
+  если <касается [Врата v] ?> тогда
+    если (Уровень) < (Всего_уровней) тогда
+      изменить [Уровень v] на (1)
+      передать [следующий уровень v] и ждать
+    иначе
+      передать [победа v] и ждать
+    конец
+  конец
+конец
+
+// Код для переключения уровней
+когда я получу [следующий уровень v]
+переключить фон на (объединить [Уровень ] (Уровень))
+установить [Очки v] в ((Очки) + (100))  // Бонус за уровень
+перейти в x: (-180) y: (0)  // Возвращаем к началу
+сказать (объединить [Уровень ] (объединить [ пройден!] (объединить [ Бонус: 100 очков] ( )))) на (3) секунд</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">6</div>
+                <h3>Добавляем таймер и жизни</h3>
+                <div class="step-content">
+                    <p>Сделаем игру более напряженной:</p>
+                    
+                    <div class="scratch-code">
+<pre>// Создаем переменные
+Время = 60
+Жизни = 3
+Рекордное_время = 999
+
+// Таймер
+когда щёлкнут по зёленому флагу
+установить [Время v] в (60)
+
+повтори до < (Время) < (1) >
+  ждать (1) секунд
+  изменить [Время v] на (-1)
+  если (Время) < (10) тогда
+    играть звук [Beep v] до конца
+  конец
+конец
+
+передать [время вышло v] и ждать
+
+// Обработка окончания времени
+когда я получу [время вышло v]
+остановить [все v]
+сказать [Время вышло!] на (2) секунд
+сказать (объединить [Твой счет: ] (Очки)) на (2) секунд
+
+// Проверка жизней
+повтори всегда
+  если (Жизни) < (1) тогда
+    передать [поражение v] и ждать
+  конец
+конец</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="task-box">
+                <h4><i class="fas fa-tasks"></i> Творческое задание</h4>
+                <p>Создай продвинутую версию лабиринта:</p>
+                
+                <ol>
+                    <li><strong>Добавь разные типы сокровищ:</strong>
+                        <ul>
+                            <li>Золото - 10 очков</li>
+                            <li>Драгоценные камни - 50 очков</li>
+                            <li>Волшебные артефакты - 100 очков + особые способности</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Создай разные типы врагов:</strong>
+                        <ul>
+                            <li>Патрулирующие - ходят по маршруту</li>
+                            <li>Преследующие - следуют за игроком</li>
+                            <li>Стражники - стоят на месте, но имеют большую зону видимости</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Добавь особые предметы:</strong>
+                        <ul>
+                            <li>Ключи - открывают запертые двери</li>
+                            <li>Зелья скорости - временно ускоряют игрока</li>
+                            <li>Плащи-невидимки - делают игрока невидимым для врагов</li>
+                            <li>Карты - показывают весь лабиринт на 10 секунд</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Создай систему сохранения:</strong>
+                        <ul>
+                            <li>Сохранение прогресса между уровнями</li>
+                            <li>Таблица рекордов с именами игроков</li>
+                            <li>Достижения (пройти уровень без потерь, собрать все сокровища и т.д.)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            
+            <div class="navigation-buttons">
+                <a href="project3.html" class="nav-btn prev">
+                    <i class="fas fa-arrow-left"></i> Предыдущий проект
+                </a>
+                <a href="index.html" class="nav-btn next">
+                    Назад к проектам <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="../python/index.html">Python</a></li>
+                        <li><a href="index.html" class="active">Scratch</a></li>
+                        <li><a href="../appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кванториум 22 | Программирование для детей 6-17 лет</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Герой-секция -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Программирование для детей 6-17 лет</h2>
+                <p>Изучай Python, Scratch и MIT App Inventor в игровой форме! Создавай игры, приложения и анимации вместе с нами.</p>
+                <a href="#courses" class="btn-hero">Начать обучение</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" >
+            </div>
+        </div>
+    </section>
+
+    <!-- Краткое описание языков -->
+    <section class="languages-intro">
+        <div class="container">
+            <h2>Выбери язык программирования</h2>
+            <p class="section-subtitle">Мы предлагаем три популярных инструмента для обучения программированию в зависимости от возраста и интересов</p>
+            
+            <div class="languages-grid">
+                <div class="language-card">
+                    <div class="language-icon" style="background-color: #3572A5;">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Python</h3>
+                    <p>Современный язык программирования для создания веб-сайтов, игр и анализа данных. Подходит для детей от 12 лет.</p>
+                    <div class="age-badge">12-17 лет</div>
+                </div>
+                
+                <div class="language-card">
+                    <div class="language-icon" style="background-color: #F7A62B;">
+                        <i class="fas fa-cat"></i>
+                    </div>
+                    <h3>Scratch</h3>
+                    <p>Визуальный язык программирования для создания анимаций и игр. Идеален для начала обучения детей от 6 лет.</p>
+                    <div class="age-badge">6-10 лет</div>
+                </div>
+                
+                <div class="language-card">
+                    <div class="language-icon" style="background-color: #6EAE42;">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>MIT App Inventor</h3>
+                    <p>Создавай свои мобильные приложения для Android без сложного кода. Подходит для детей от 10 лет.</p>
+                    <div class="age-badge">10-17 лет</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Кнопки для перехода к учебным материалам -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <h2>Обучающие материалы</h2>
+            <p class="section-subtitle">Нажми на кнопку, чтобы перейти к учебным материалам по выбранному направлению</p>
+            
+            <div class="course-buttons">
+                <a href="python/index.html" class="course-btn python-btn">
+                    <div class="course-btn-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="course-btn-text">
+                        <h3>Python</h3>
+                        <p>Учебные материалы для начинающих, продолжающих и профи</p>
+                    </div>
+                    <div class="course-btn-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+                
+                <a href="scratch/index.html" class="course-btn scratch-btn">
+                    <div class="course-btn-icon">
+                        <i class="fas fa-cat"></i>
+                    </div>
+                    <div class="course-btn-text">
+                        <h3>Scratch</h3>
+                        <p>Создай свою первую игру или мультфильм</p>
+                    </div>
+                    <div class="course-btn-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+                
+                <a href="appinventor/index.html" class="course-btn appinventor-btn">
+                    <div class="course-btn-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="course-btn-text">
+                        <h3>MIT App Inventor</h3>
+                        <p>Разрабатывай мобильные приложения для Android</p>
+                    </div>
+                    <div class="course-btn-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок "Почему мы?" -->
+    <section class="why-us">
+        <div class="container">
+            <h2>Почему выбирают Кванториум 22?</h2>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Игровой подход</h3>
+                    <p>Обучение через создание игр и проектов, которые интересны детям</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Работа в команде</h3>
+                    <p>Учимся работать вместе над проектами, как настоящие разработчики</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Опытные наставники</h3>
+                    <p>Преподаватели с опытом работы в IT и педагогической деятельности</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Реальные проекты</h3>
+                    <p>Создаем проекты, которые можно показать друзьям и родителям</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2017 года. Более 700 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="index.html" class="active">Главная</a></li>
+                        <li><a href="python/index.html">Python</a></li>
+                        <li><a href="scratch/index.html">Scratch</a></li>
+                        <li><a href="appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="achievements.html">Достижения</a></li>
+                        <li><a href="news.html">Новости</a></li>
+                        <!-- Официальные сайты -->
+                        <li><a href="https://www.python.org" target="_blank">Python.org</a></li>
+                        <li><a href="https://scratch.mit.edu" target="_blank">Scratch.mit.edu</a></li>
+                        <li><a href="https://appinventor.mit.edu" target="_blank">AppInventor.mit.edu</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

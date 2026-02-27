@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок 8: Обработка ошибок | Кванториум 22</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="python.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .error-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .error-step {
+            background: white;
+            border: 2px solid var(--python-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .error-arrow {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            margin: 5px 0;
+        }
+        
+        .try-block {
+            background: #fff5f5;
+            border-left: 4px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .except-block {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .finally-block {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .error-icon {
+            color: #ff6b6b;
+            margin-right: 10px;
+        }
+        
+        .success-icon {
+            color: #48bb78;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px;">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Кванториум 22</h1>
+                        <p>Детский технопарк</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="../achievements.html"><i class="fas fa-trophy"></i> Достижения</a></li>
+                    <li><a href="../news.html"><i class="fas fa-newspaper"></i> Новости</a></li>
+                    <li><a href="../index.html#contact"><i class="fas fa-envelope"></i> Контакты</a></li>
+                </ul>
+            </nav>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="python-header">
+        <div class="container">
+            <h1><i class="fab fa-python"></i> Урок 8: Обработка ошибок</h1>
+            <p class="section-subtitle">Учим программы правильно реагировать на проблемы</p>
+        </div>
+    </section>
+
+    <section class="materials-section">
+        <div class="container">
+            <div class="lesson-content">
+                <div class="lesson-step">
+                    <h3>Зачем обрабатывать ошибки?</h3>
+                    <p>Ошибки (исключения) возникают, когда программа сталкивается с неожиданной ситуацией. Без обработки ошибок программа аварийно завершается.</p>
+                    
+                    <div class="error-flow">
+                        <div class="error-step">
+                            <i class="fas fa-play error-icon"></i> Программа работает нормально
+                        </div>
+                        <div class="error-arrow">↓</div>
+                        <div class="error-step" style="border-color: #ff6b6b;">
+                            <i class="fas fa-exclamation-triangle error-icon"></i> Возникает ошибка
+                        </div>
+                        <div class="error-arrow">↓</div>
+                        <div class="error-step" style="background-color: #fff5f5;">
+                            <i class="fas fa-shield-alt success-icon"></i> Ошибка перехвачена и обработана
+                        </div>
+                        <div class="error-arrow">↓</div>
+                        <div class="error-step">
+                            <i class="fas fa-check success-icon"></i> Программа продолжает работу
+                        </div>
+                    </div>
+                    
+                    <div class="code-example">
+<pre><code># Без обработки ошибок - программа упадет
+число = input("Введите число: ")
+результат = 10 / int(число)  # Ошибка, если ввести 0 или текст
+print(f"Результат: {результат}")
+
+# С обработкой ошибок - программа продолжит работу
+try:
+    число = input("Введите число: ")
+    результат = 10 / int(число)
+    print(f"Результат: {результат}")
+except:
+    print("Что-то пошло не так, но программа не упала!")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Конструкция try-except</h3>
+                    <p>Основной способ обработки ошибок в Python:</p>
+                    
+                    <div class="code-example">
+<pre><code># Общая форма
+try:
+    # Код, который может вызвать ошибку
+    рискованный_код()
+except:
+    # Код, который выполнится при ошибке
+    обработка_ошибки()
+
+# Конкретный пример
+try:
+    число = int(input("Введите число: "))
+    print(f"Вы ввели: {число}")
+except ValueError:
+    print("Это не число! Пожалуйста, введите целое число.")
+except ZeroDivisionError:
+    print("На ноль делить нельзя!")
+except Exception as e:
+    print(f"Произошла ошибка: {e}")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Типы исключений</h3>
+                    <p>Python имеет множество встроенных типов исключений:</p>
+                    
+                    <div class="code-example">
+<pre><code># SyntaxError - ошибка синтаксиса
+# print("Привет)  # Ошибка: не закрыта кавычка
+
+# NameError - имя не найдено
+try:
+    print(несуществующая_переменная)
+except NameError:
+    print("Переменная не существует")
+
+# TypeError - неверный тип
+try:
+    результат = "текст" + 5
+except TypeError:
+    print("Нельзя складывать строку с числом")
+
+# ValueError - неверное значение
+try:
+    число = int("не число")
+except ValueError:
+    print("Невозможно преобразовать в число")
+
+# ZeroDivisionError - деление на ноль
+try:
+    результат = 10 / 0
+except ZeroDivisionError:
+    print("Деление на ноль невозможно")
+
+# IndexError - индекс вне диапазона
+try:
+    список = [1, 2, 3]
+    элемент = список[10]
+except IndexError:
+    print("Индекс выходит за пределы списка")
+
+# KeyError - ключ не найден в словаре
+try:
+    словарь = {"ключ": "значение"}
+    значение = словарь["несуществующий_ключ"]
+except KeyError:
+    print("Ключ не найден в словаре")
+
+# FileNotFoundError - файл не найден
+try:
+    with open("несуществующий_файл.txt", "r") as файл:
+        содержимое = файл.read()
+except FileNotFoundError:
+    print("Файл не найден")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Полная форма: try-except-else-finally</h3>
+                    <p>Расширенная конструкция для полного контроля:</p>
+                    
+                    <div class="try-block">
+                        <strong><i class="fas fa-play"></i> try:</strong> Код, который может вызвать ошибку
+                    </div>
+                    <div class="except-block">
+                        <strong><i class="fas fa-catch"></i> except:</strong> Обработка ошибки
+                    </div>
+                    <div class="try-block">
+                        <strong><i class="fas fa-check"></i> else:</strong> Выполняется если НЕ было ошибки
+                    </div>
+                    <div class="finally-block">
+                        <strong><i class="fas fa-redo"></i> finally:</strong> Выполняется ВСЕГДА
+                    </div>
+                    
+                    <div class="code-example">
+<pre><code>def безопасное_деление(делимое, делитель):
+    try:
+        результат = делимое / делитель
+    except ZeroDivisionError:
+        print("Ошибка: деление на ноль!")
+        return None
+    except TypeError:
+        print("Ошибка: неверный тип данных!")
+        return None
+    else:
+        print("Деление выполнено успешно!")
+        return результат
+    finally:
+        print("Этот код выполнится в любом случае")
+
+# Примеры использования
+print(безопасное_деление(10, 2))    # Успешно
+print(безопасное_деление(10, 0))    # Ошибка деления на ноль
+print(безопасное_деление(10, "текст"))  # Ошибка типа
+
+# Практический пример с файлами
+def читать_файл(имя_файла):
+    try:
+        файл = open(имя_файла, "r", encoding="utf-8")
+    except FileNotFoundError:
+        print(f"Файл {имя_файла} не найден")
+        return None
+    except PermissionError:
+        print(f"Нет доступа к файлу {имя_файла}")
+        return None
+    else:
+        содержимое = файл.read()
+        print(f"Файл {имя_файла} успешно прочитан")
+        return содержимое
+    finally:
+        if 'файл' in locals() and not файл.closed:
+            файл.close()
+            print("Файл закрыт")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Создание собственных исключений</h3>
+                    <p>Вы можете создавать свои типы ошибок:</p>
+                    
+                    <div class="code-example">
+<pre><code># Создание простого исключения
+class ОшибкаВозраста(Exception):
+    pass
+
+class ОтрицательныйВозраст(ОшибкаВозраста):
+    """Исключение для отрицательного возраста"""
+    pass
+
+class СлишкомБольшойВозраст(ОшибкаВозраста):
+    """Исключение для слишком большого возраста"""
+    pass
+
+# Использование
+def установить_возраст(возраст):
+    if возраст < 0:
+        raise ОтрицательныйВозраст("Возраст не может быть отрицательным")
+    if возраст > 150:
+        raise СлишкомБольшойВозраст("Возраст слишком большой")
+    print(f"Возраст установлен: {возраст}")
+
+# Тестирование
+try:
+    установить_возраст(-5)
+except ОтрицательныйВозраст as e:
+    print(f"Ошибка: {e}")
+
+try:
+    установить_возраст(200)
+except СлишкомБольшойВозраст as e:
+    print(f"Ошибка: {e}")
+
+# Более сложное исключение
+class ОшибкаБанковскогоСчета(Exception):
+    def __init__(self, баланс, сумма):
+        self.баланс = баланс
+        self.сумма = сумма
+        self.сообщение = f"Недостаточно средств: баланс {баланс}, запрошено {сумма}"
+        super().__init__(self.сообщение)
+
+class БанковскийСчет:
+    def __init__(self, начальный_баланс):
+        self.баланс = начальный_баланс
+    
+    def снять(self, сумма):
+        if сумма > self.баланс:
+            raise ОшибкаБанковскогоСчета(self.баланс, сумма)
+        self.баланс -= сумма
+        print(f"Снято {сумма}. Новый баланс: {self.баланс}")
+
+# Использование
+счет = БанковскийСчет(1000)
+try:
+    счет.снять(1500)
+except ОшибкаБанковскогоСчета as e:
+    print(e.сообщение)
+    print(f"Не хватает: {e.сумма - e.баланс}")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Контекстные менеджеры (with)</h3>
+                    <p>Упрощают работу с ресурсами и автоматически обрабатывают ошибки:</p>
+                    
+                    <div class="code-example">
+<pre><code># Работа с файлами без with (плохой способ)
+try:
+    файл = open("пример.txt", "w")
+    файл.write("Привет, мир!")
+finally:
+    if 'файл' in locals():
+        файл.close()
+
+# Работа с файлами с with (хороший способ)
+with open("пример.txt", "w") as файл:
+    файл.write("Привет, мир!")
+# Файл автоматически закроется, даже если произойдет ошибка
+
+# Создание собственного контекстного менеджера
+class Таймер:
+    def __init__(self, название):
+        self.название = название
+    
+    def __enter__(self):
+        import time
+        self.начало = time.time()
+        print(f"Начало: {self.название}")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import time
+        self.конец = time.time()
+        print(f"Конец: {self.название}")
+        print(f"Прошло времени: {self.конец - self.начало:.2f} секунд")
+        # Если возвращаем True, исключение будет подавлено
+        return False
+
+# Использование
+with Таймер("Мой код") as таймер:
+    # Здесь выполняется код, который нужно измерить
+    сумма = 0
+    for i in range(1000000):
+        сумма += i
+    print(f"Сумма: {сумма}")
+
+# Контекстный менеджер для временного изменения настроек
+import sys
+from contextlib import contextmanager
+
+@contextmanager
+def перенаправить_вывод(новый_файл):
+    старый_stdout = sys.stdout
+    sys.stdout = новый_файл
+    try:
+        yield
+    finally:
+        sys.stdout = старый_stdout
+
+# Использование декоратора
+with open("вывод.txt", "w") as файл:
+    with перенаправить_вывод(файл):
+        print("Этот текст запишется в файл")
+        print("А не на экран")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="lesson-step">
+                    <h3>Логирование ошибок</h3>
+                    <p>Вместо простого вывода ошибок на экран лучше использовать логирование:</p>
+                    
+                    <div class="code-example">
+<pre><code>import logging
+
+# Настройка логирования
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('ошибки.log', encoding='utf-8'),
+        logging.StreamHandler()  # Также выводить на экран
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+def безопасная_функция(данные):
+    try:
+        if not данные:
+            raise ValueError("Пустые данные")
+        
+        результат = int(данные) * 2
+        logger.info(f"Функция выполнена успешно: {результат}")
+        return результат
+        
+    except ValueError as e:
+        logger.error(f"Ошибка значения: {e}", exc_info=True)
+        return None
+    except Exception as e:
+        logger.critical(f"Критическая ошибка: {e}", exc_info=True)
+        return None
+
+# Разные уровни логирования
+logger.debug("Отладочное сообщение")      # Для разработки
+logger.info("Информационное сообщение")   # Обычная информация
+logger.warning("Предупреждение")          # Что-то необычное
+logger.error("Ошибка")                    # Серьезная ошибка
+logger.critical("Критическая ошибка")     # Очень серьезная ошибка
+
+# Пример использования
+for данные in ["10", "", "текст", "5"]:
+    результат = безопасная_функция(данные)
+    print(f"Результат для '{данные}': {результат}")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="task-box">
+                    <h4><i class="fas fa-tasks"></i> Практическое задание: "Надежный калькулятор"</h4>
+                    <p>Усовершенствуйте калькулятор из прошлого урока, добавив обработку ошибок.</p>
+                    
+                    <p><strong>Требования:</strong></p>
+                    <ol>
+                        <li>Добавьте обработку всех возможных ошибок:
+                            <ul>
+                                <li>Деление на ноль</li>
+                                <li>Неверный ввод (не числа)</li>
+                                <li>Ошибки при работе с файлами</li>
+                                <li>Выход за пределы меню</li>
+                            </ul>
+                        </li>
+                        <li>Создайте собственные исключения:
+                            <ul>
+                                <li>ОшибкаКалькулятора</li>
+                                <li>ОшибкаВвода</li>
+                                <li>ОшибкаФайла</li>
+                            </ul>
+                        </li>
+                        <li>Реализуйте систему логирования:
+                            <ul>
+                                <li>Записывайте все операции в лог-файл</li>
+                                <li>Разные уровни логирования для разных событий</li>
+                            </ul>
+                        </li>
+                        <li>Добавьте возможность восстановления:
+                            <ul>
+                                <li>При ошибке предлагать повторить ввод</li>
+                                <li>Автоматическое сохранение истории при сбое</li>
+                            </ul>
+                        </li>
+                        <li>Используйте контекстные менеджеры для работы с файлами</li>
+                    </ol>
+                    
+                    <p><strong>Пример структуры:</strong></p>
+                    <div class="code-example">
+<pre><code>class ОшибкаКалькулятора(Exception):
+    """Базовое исключение для калькулятора"""
+    pass
+
+class ОшибкаВвода(ОшибкаКалькулятора):
+    """Ошибка ввода данных"""
+    pass
+
+class ОшибкаДеленияНаНоль(ОшибкаКалькулятора):
+    """Попытка деления на ноль"""
+    pass
+
+def безопасное_деление(a, b):
+    try:
+        if b == 0:
+            raise ОшибкаДеленияНаНоль(f"Деление {a} на {b}")
+        return a / b
+    except ОшибкаДеленияНаНоль as e:
+        logger.error(f"Ошибка деления: {e}")
+        return None
+
+def получить_число(подсказка):
+    while True:
+        try:
+            ввод = input(подсказка)
+            число = float(ввод)
+            return число
+        except ValueError:
+            print("Ошибка! Введите корректное число.")
+            logger.warning(f"Неверный ввод: {ввод}")
+        except KeyboardInterrupt:
+            print("\nВвод прерван")
+            raise</code></pre>
+                    </div>
+                    
+                    <p><strong>Пример работы программы:</strong></p>
+                    <div class="code-example">
+<pre><code>=== НАДЕЖНЫЙ КАЛЬКУЛЯТОР ===
+Введите первое число: десять
+[ОШИБКА] Неверный ввод! Пожалуйста, введите число.
+Введите первое число: 10
+Введите второе число: 0
+Выберите операцию:
+1. Сложение
+2. Вычитание
+3. Умножение
+4. Деление
+
+Ваш выбор: 4
+[ОШИБКА] Деление на ноль невозможно!
+Повторить? (да/нет): да
+
+... программа продолжает работу ...</code></pre>
+                    </div>
+                    
+                    <p><strong>Подсказки:</strong></p>
+                    <ul>
+                        <li>Используйте try-except внутри циклов для повторения операций</li>
+                        <li>Создайте функцию-обертку для безопасного выполнения операций</li>
+                        <li>Используйте модуль logging для записи ошибок в файл</li>
+                        <li>Добавьте блок finally для гарантированного сохранения истории</li>
+                        <li>Используйте with для работы с файлами логов</li>
+                    </ul>
+                </div>
+                
+                <div class="lesson-tips">
+                    <h4><i class="fas fa-star"></i> Полезные советы</h4>
+                    <ul>
+                        <li>Ловите конкретные исключения, а не все через <code>except:</code></li>
+                        <li>Не подавляйте исключения без веской причины</li>
+                        <li>Используйте <code>finally</code> для освобождения ресурсов</li>
+                        <li>Логируйте ошибки с полной информацией (<code>exc_info=True</code>)</li>
+                        <li>Создавайте понятные сообщения об ошибках</li>
+                        <li>Используйте контекстные менеджеры для работы с файлами</li>
+                        <li>Тестируйте обработку ошибок так же, как основной функционал</li>
+                    </ul>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <a href="lesson7.html" class="nav-btn prev">
+                        <i class="fas fa-arrow-left"></i> Предыдущий урок
+                    </a>
+                    <a href="lesson9.html" class="nav-btn next">
+                        Следующий урок: Работа с файлами <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="logo-text">
+                            <h2>Кванториум 22</h2>
+                            <p>Детский технопарк</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Обучаем детей программированию с 2018 года. Более 1000 выпускников!</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="../index.html">Главная</a></li>
+                        <li><a href="index.html" class="active">Python</a></li>
+                        <li><a href="../scratch/index.html">Scratch</a></li>
+                        <li><a href="../appinventor/index.html">MIT App Inventor</a></li>
+                        <li><a href="../achievements.html">Достижения</a></li>
+                        <li><a href="../news.html">Новости</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Контакты</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> г. Барнаул, ул. Папанинцев, 113</p>
+                    <p><i class="fas fa-phone"></i> +7 (3852) 31-81-26</p>
+                    <p><i class="fas fa-envelope"></i>  kvant22@inbox.ru</p>
+                    <p><i class="fas fa-globe"></i> <a href="https://kvantorium22.ru/" target="_blank" style="color: white; text-decoration: underline;">Официальный сайт</a></p>
+                    <div class="social-links">
+                        <a href="https://vk.com/kvant22" target="_blank" title="Мы ВКонтакте"><i class="fab fa-vk"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Кванториум 22. Все права защищены.</p>
+                <p>Сайт разработан учениками Кванториума</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
