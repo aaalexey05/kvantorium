@@ -1,0 +1,12 @@
+{% if request.user.is_authenticated %}
+  <form hx-post="{% url 'courses:enroll' course.slug %}" hx-swap="outerHTML" hx-target="#enroll-btn">
+    {% csrf_token %}
+    {% if enrolled %}
+      <button class="btn secondary" type="submit">Отписаться</button>
+    {% else %}
+      <button class="btn primary" type="submit">Записаться на курс</button>
+    {% endif %}
+  </form>
+{% else %}
+  <a class="btn primary" href="{% url 'accounts:login' %}?next={{ request.path }}">Войти, чтобы записаться</a>
+{% endif %}

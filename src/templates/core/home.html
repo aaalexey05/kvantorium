@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero__text">
+    <p class="eyebrow">LMS-Платформа</p>
+    <h1>Учимся программированию в мягком и понятном интерфейсе</h1>
+    <p>Курсы, уроки, задания и прогресс в одном пространстве для учеников, родителей и преподавателей.</p>
+  </div>
+  <div class="hero__actions">
+    <a class="btn primary" href="{% url 'courses:list' %}">Перейти к курсам</a>
+    <a class="btn ghost" href="{% url 'reviews:list' %}">Читать отзывы</a>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Популярные курсы</h2>
+    <a href="{% url 'courses:list' %}">Все курсы</a>
+  </div>
+  <div class="grid">
+    {% for course in courses %}
+      <article class="card card-course">
+        <div class="card__body">
+          <p class="tag">{{ course.tags|default:"Курс" }}</p>
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.short_description|truncatechars:140 }}</p>
+        </div>
+        <div class="card__footer">
+          <a class="btn ghost" href="{% url 'courses:detail' course.slug %}">Подробнее</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted">Курсы пока не опубликованы.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Новости</h2>
+    <a href="{% url 'news:list' %}">Все новости</a>
+  </div>
+  <div class="grid">
+    {% for post in news %}
+      <article class="card card-news">
+        <p class="tag">{{ post.published_at|date:"d.m.Y" }}</p>
+        <h3>{{ post.title }}</h3>
+        <p class="muted">{{ post.summary|truncatechars:110 }}</p>
+        <a class="btn ghost" href="{% url 'news:detail' post.slug %}">Читать</a>
+      </article>
+    {% empty %}
+      <p class="muted">Нет новостей.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Достижения</h2>
+    <a href="{% url 'achievements:list' %}">Все достижения</a>
+  </div>
+  <div class="grid">
+    {% for item in achievements %}
+      <article class="card card-achievement">
+        <p class="tag accent-pink">{{ item.year|default:"2026" }}</p>
+        <h3>{{ item.title }}</h3>
+        <p class="muted">{{ item.description|truncatechars:120 }}</p>
+      </article>
+    {% empty %}
+      <p class="muted">Пока нет достижений.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Отзывы</h2>
+    <a href="{% url 'reviews:list' %}">Все отзывы</a>
+  </div>
+  <div class="grid">
+    {% for review in reviews %}
+      <article class="card card-review">
+        <p class="tag accent-green">{{ review.get_author_type_display }}</p>
+        <h3>{{ review.name }}</h3>
+        <p class="muted">Оценка: {{ review.rating }}/5</p>
+        <p>{{ review.text|truncatechars:160 }}</p>
+      </article>
+    {% empty %}
+      <p class="muted">Отзывы появятся после модерации.</p>
+    {% endfor %}
+  </div>
+  <div class="panel form-panel">
+    <h3>Оставить отзыв</h3>
+    <form method="post" action="{% url 'reviews:submit' %}" class="stack-form">
+      {% csrf_token %}
+      {{ review_form.as_p }}
+      <button class="btn primary" type="submit">Отправить</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

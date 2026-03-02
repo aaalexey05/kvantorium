@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Новости</p>
+    <h1>События и обновления Кванториума</h1>
+    <p>Следите за анонсами, наборами и результатами учеников.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="grid">
+    {% for post in posts %}
+      <article class="card card-news">
+        <p class="tag">{{ post.published_at|date:"d.m.Y" }}</p>
+        <h3>{{ post.title }}</h3>
+        <p class="muted">{{ post.summary|truncatechars:150 }}</p>
+        <a class="btn ghost" href="{% url 'news:detail' post.slug %}">Читать</a>
+      </article>
+    {% empty %}
+      <p class="muted">Пока нет новостей.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

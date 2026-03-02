@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Контакты</p>
+    <h1>Мы на связи</h1>
+    <p>Если нужна помощь с курсами или доступом, напишите или позвоните.</p>
+  </div>
+</section>
+
+<section class="section-block">
+{% if info %}
+  <div class="panel">
+    <p><strong>Адрес:</strong> {{ info.address }}</p>
+    {% if info.phone %}<p><strong>Телефон:</strong> {{ info.phone }}</p>{% endif %}
+    {% if info.email %}<p><strong>Email:</strong> <a href="mailto:{{ info.email }}">{{ info.email }}</a></p>{% endif %}
+    {% if info.schedule %}<p><strong>График:</strong> {{ info.schedule }}</p>{% endif %}
+    {% if info.map_url %}<p><a class="btn ghost" href="{{ info.map_url }}" target="_blank">Открыть карту</a></p>{% endif %}
+  </div>
+{% else %}
+  <p class="muted">Контактная информация будет добавлена позже.</p>
+{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="lesson">
+  <p class="crumbs"><a href="{% url 'news:list' %}">Новости</a> / {{ post.published_at|date:"d.m.Y H:i" }}</p>
+  <h1>{{ post.title }}</h1>
+  <div class="lesson-blocks">{% autoescape off %}{{ post.body }}{% endautoescape %}</div>
+</article>
+{% endblock %}

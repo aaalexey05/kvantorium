@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кванториум 22</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="/static/js/vendor/htmx.min.js" defer></script>
+    <script src="/static/js/vendor/alpine.min.js" defer></script>
+    <script src="/static/js/vendor/prism.min.js" defer></script>
+    <script src="/static/js/htmx-init.js" defer></script>
+    <script src="/static/js/app.js" defer></script>
+</head>
+<body>
+{% include 'includes/navbar.html' %}
+<main>
+    {% include 'includes/alerts.html' %}
+    {% block content %}{% endblock %}
+</main>
+{% include 'includes/footer.html' %}
+</body>
+</html>

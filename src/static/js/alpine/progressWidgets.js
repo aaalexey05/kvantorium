@@ -1,0 +1,1 @@
+// Alpine component placeholder

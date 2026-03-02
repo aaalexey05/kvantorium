@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero__text">
+    <p class="eyebrow">Каталог курсов</p>
+    <h1>Курсы по Python, Scratch и мобильной разработке</h1>
+    <p>Выберите направление и подключайтесь к занятиям в удобном темпе.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Доступные курсы</h2>
+    <span class="chip"><strong>{{ courses|length }}</strong><span>публикаций</span></span>
+  </div>
+  <div class="grid">
+    {% for course in courses %}
+      <article class="card card-course">
+        <div class="card__body">
+          <p class="tag">{{ course.tags|default:"Обучение" }}</p>
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.short_description|truncatechars:170 }}</p>
+        </div>
+        <div class="card__footer">
+          <a class="btn primary" href="{% url 'courses:detail' course.slug %}">Подробнее</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted">Курсы пока не добавлены.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

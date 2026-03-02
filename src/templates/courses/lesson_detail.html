@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="lesson">
+  <p class="crumbs"><a href="{% url 'courses:detail' course.slug %}">{{ course.title }}</a> / {{ lesson.title }}</p>
+  <h1>{{ lesson.title }}</h1>
+  <p class="muted">{{ lesson.summary }}</p>
+
+  <div id="progress-badge">
+    {% if request.user.is_authenticated %}
+      {% include "courses/partials/progress_badge.html" with progress_record=progress_record %}
+    {% endif %}
+  </div>
+
+  <div class="lesson-blocks">
+    {% for block in lesson.blocks.all %}
+      {% if block.type == 'text' %}
+        <div class="block text">{% autoescape off %}{{ block.payload.text|default:'' }}{% endautoescape %}</div>
+      {% elif block.type == 'image' %}
+        <figure class="block image"><img src="{{ block.payload.url }}" alt=""><figcaption class="muted">{{ block.payload.caption }}</figcaption></figure>
+      {% elif block.type == 'code' %}
+        <pre class="block code"><code class="language-{{ block.language|default:'python' }}">{{ block.payload.code }}</code></pre>
+      {% elif block.type == 'video' %}
+        <div class="block video"><iframe src="{{ block.payload.url }}" allowfullscreen></iframe></div>
+      {% elif block.type == 'file' %}
+        <div class="block file"><a class="btn ghost" href="{{ block.payload.url }}" download>Скачать файл</a></div>
+      {% endif %}
+    {% empty %}
+      <p class="muted">Контент урока появится позже.</p>
+    {% endfor %}
+  </div>
+
+  {% if request.user.is_authenticated %}
+    <form hx-post="{% url 'progress:mark_lesson' lesson.pk %}" hx-target="#progress-badge" hx-swap="outerHTML" class="lesson-action">
+      {% csrf_token %}
+      <button class="btn primary" type="submit">Отметить как пройдено</button>
+    </form>
+  {% else %}
+    <p class="muted">Войдите, чтобы отслеживать прогресс.</p>
+  {% endif %}
+</article>
+{% endblock %}

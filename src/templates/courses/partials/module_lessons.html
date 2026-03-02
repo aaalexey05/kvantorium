@@ -1,0 +1,5 @@
+<ul class="lesson-list" id="module-{{ module.id }}-lessons">
+  {% for lesson in module.lessons.all %}
+    <li>{{ lesson.title }}</li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Отзывы</p>
+    <h1>Что говорят ученики и родители</h1>
+    <p>Все отзывы проходят модерацию перед публикацией.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="grid">
+    {% for review in reviews %}
+      <article class="card card-review">
+        <p class="tag accent-green">{{ review.get_author_type_display }}</p>
+        <h3>{{ review.name }}</h3>
+        <p class="muted">Оценка: {{ review.rating }}/5</p>
+        <p>{{ review.text|linebreaks }}</p>
+      </article>
+    {% empty %}
+      <p class="muted">Отзывы появятся после модерации.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="panel form-panel auth">
+    <h2>Оставить отзыв</h2>
+    <form method="post" action="{% url 'reviews:submit' %}" class="stack-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn primary" type="submit">Отправить</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

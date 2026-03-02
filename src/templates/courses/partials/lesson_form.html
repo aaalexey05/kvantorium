@@ -1,0 +1,5 @@
+<form hx-post="" hx-target="#module-{{ module.id }}-lessons" hx-swap="outerHTML">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn primary" type="submit">Создать урок</button>
+</form>

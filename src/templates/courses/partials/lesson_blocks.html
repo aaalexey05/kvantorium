@@ -1,0 +1,5 @@
+<div class="lesson-blocks" id="lesson-{{ lesson.id }}-blocks">
+  {% for block in lesson.blocks.all %}
+    <div class="block">{{ block.get_type_display }} — {{ block.payload }}</div>
+  {% endfor %}
+</div>

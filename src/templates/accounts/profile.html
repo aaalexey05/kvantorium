@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Профиль</p>
+    <h1>{{ request.user.first_name|default:request.user.email }}</h1>
+    <p>Роль: {{ request.user.get_role_display }}. Здесь отображаются ваши курсы и прогресс.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Мои курсы</h2>
+    <span class="chip"><strong>{{ enrollment_cards|length }}</strong><span>подключений</span></span>
+  </div>
+  <div class="grid">
+    {% for item in enrollment_cards %}
+      <article class="card card-course">
+        <h3>{{ item.enrollment.course.title }}</h3>
+        <p class="muted">{{ item.enrollment.course.short_description|truncatechars:140 }}</p>
+        <p class="tag accent-green">Прогресс: {{ item.progress_percent }}%</p>
+        <a class="btn ghost" href="{% url 'courses:detail' item.enrollment.course.slug %}">Открыть курс</a>
+      </article>
+    {% empty %}
+      <p class="muted">Вы еще не записаны на курсы.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% if created_courses %}
+<section class="section-block">
+  <div class="section-head">
+    <h2>Курсы преподавателя</h2>
+  </div>
+  <div class="grid">
+    {% for course in created_courses %}
+      <article class="card">
+        <p class="tag accent-peach">Авторский курс</p>
+        <h3>{{ course.title }}</h3>
+        <p class="muted">{{ course.short_description|truncatechars:120 }}</p>
+        <a class="btn ghost" href="{% url 'courses:detail' course.slug %}">Открыть</a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

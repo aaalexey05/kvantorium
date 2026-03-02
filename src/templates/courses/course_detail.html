@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="course-header">
+  <div>
+    <p class="tag">{{ course.tags|default:"Курс" }}</p>
+    <h1>{{ course.title }}</h1>
+    <p class="muted">{{ course.short_description }}</p>
+  </div>
+  <div id="enroll-btn" hx-target="#enroll-btn" hx-swap="outerHTML">
+    {% include "courses/partials/enroll_button.html" with course=course enrolled=enrolled %}
+  </div>
+</article>
+
+<section class="section-block modules">
+  <div class="section-head">
+    <h2>Модули и уроки</h2>
+    <span class="chip"><strong>{{ course.modules.count }}</strong><span>модулей</span></span>
+  </div>
+  {% for module in course.modules.all %}
+    <details open>
+      <summary>{{ module.title }}</summary>
+      <ul class="lesson-list">
+        {% for lesson in module.lessons.all %}
+          <li class="lesson-item">
+            <a href="{% url 'courses:lesson_detail' lesson.pk %}">{{ lesson.title }}</a>
+            {% if not lesson.is_published %}<span class="pill">черновик</span>{% endif %}
+          </li>
+        {% empty %}
+          <li class="muted">Нет уроков</li>
+        {% endfor %}
+      </ul>
+    </details>
+  {% empty %}
+    <p class="muted">Модули пока не добавлены.</p>
+  {% endfor %}
+</section>
+{% endblock %}

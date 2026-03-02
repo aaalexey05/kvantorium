@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Регистрация</p>
+    <h1>Создайте личный аккаунт</h1>
+    <p>После регистрации вы сможете записываться на курсы и видеть личный прогресс.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <section class="auth">
+    <form method="post" class="stack-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn primary" type="submit">Создать аккаунт</button>
+    </form>
+    <p class="muted">Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p>
+  </section>
+</section>
+{% endblock %}
