@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Админ / Курсы</p>
+    <h1>Управление курсами</h1>
+    <p>Полный список курсов с авторами, статусами и количеством записавшихся.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Все курсы</h2>
+    <a class="btn ghost" href="{% url 'dashboard:admin_home' %}">Назад в дашборд</a>
+  </div>
+  <div class="table-wrap panel">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Курс</th>
+          <th>Преподаватель</th>
+          <th>Статус</th>
+          <th>Ученики</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for course in courses %}
+          <tr>
+            <td>{{ course.title }}</td>
+            <td>{{ course.created_by.email|default:"—" }}</td>
+            <td>{{ course.get_status_display }}</td>
+            <td>{{ course.students_count }}</td>
+            <td class="actions-row">
+              <a class="btn ghost" href="{% url 'dashboard:admin_course_edit' course.pk %}">Редактировать</a>
+              <a class="btn ghost" href="{% url 'courses:detail' course.slug %}">Открыть</a>
+              <form method="post" action="{% url 'dashboard:admin_course_delete' course.pk %}">
+                {% csrf_token %}
+                <button class="btn secondary" type="submit">Удалить</button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="muted">Курсы пока не созданы.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

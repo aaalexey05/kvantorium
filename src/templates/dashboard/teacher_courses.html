@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Преподаватель / Курсы</p>
+    <h1>Мои курсы</h1>
+    <p>Создавайте новые курсы и управляйте существующими.</p>
+  </div>
+  <div class="hero__actions">
+    <a class="btn primary" href="{% url 'dashboard:teacher_course_create' %}">Создать курс</a>
+    <a class="btn ghost" href="{% url 'dashboard:teacher_stats' %}">Статистика</a>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="grid">
+    {% for course in courses %}
+      <article class="card card-course">
+        <div class="card__body">
+          <p class="tag">{{ course.get_status_display }}</p>
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.short_description|truncatechars:150 }}</p>
+          <p class="muted">Ученики: {{ course.students_count }}</p>
+        </div>
+        <div class="card__footer">
+          <a class="btn ghost" href="{% url 'dashboard:teacher_course_edit' course.pk %}">Редактировать</a>
+          <form method="post" action="{% url 'dashboard:teacher_course_delete' course.pk %}">
+            {% csrf_token %}
+            <button class="btn secondary" type="submit">Удалить</button>
+          </form>
+          <a class="btn ghost" href="{% url 'courses:detail' course.slug %}">Открыть</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted">Курсы отсутствуют.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

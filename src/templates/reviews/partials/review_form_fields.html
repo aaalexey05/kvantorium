@@ -1,0 +1,31 @@
+{% if form.non_field_errors %}
+  <ul class="alerts">
+    {% for err in form.non_field_errors %}
+      <li class="error">{{ err }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<div class="form-field">
+  <label for="{{ form.name.id_for_label }}">Имя</label>
+  {{ form.name }}
+  {% if form.name.errors %}<p class="field-error">{{ form.name.errors|join:", " }}</p>{% endif %}
+</div>
+
+<div class="form-field">
+  <label for="{{ form.author_type.id_for_label }}">Кто вы</label>
+  {{ form.author_type }}
+  {% if form.author_type.errors %}<p class="field-error">{{ form.author_type.errors|join:", " }}</p>{% endif %}
+</div>
+
+<div class="form-field">
+  <label for="{{ form.rating.id_for_label }}">Оценка</label>
+  {{ form.rating }}
+  {% if form.rating.errors %}<p class="field-error">{{ form.rating.errors|join:", " }}</p>{% endif %}
+</div>
+
+<div class="form-field">
+  <label for="{{ form.text.id_for_label }}">Текст отзыва</label>
+  {{ form.text }}
+  {% if form.text.errors %}<p class="field-error">{{ form.text.errors|join:", " }}</p>{% endif %}
+</div>

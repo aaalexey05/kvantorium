@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Админ / Курс</p>
+    <h1>Редактирование курса</h1>
+    <p>{{ course.title }}</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="panel auth">
+    <form method="post" class="stack-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<p class="field-error">{{ field.errors|join:", " }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <div class="row-actions">
+        <button class="btn primary" type="submit">Сохранить</button>
+        <a class="btn ghost" href="{% url 'dashboard:admin_courses' %}">Отмена</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

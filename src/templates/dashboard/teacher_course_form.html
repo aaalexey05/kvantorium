@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Преподаватель / Курсы</p>
+    <h1>{{ page_title }}</h1>
+    <p>Шаг 1: основная информация. Шаг 2: структура модулей и уроков. Шаг 3: сохранение и публикация.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="panel auth">
+    <form
+      method="post"
+      enctype="multipart/form-data"
+      class="stack-form {% if course %}js-course-autosave{% endif %}"
+      {% if course %}data-autosave-url="{% url 'dashboard:teacher_course_autosave' course.pk %}"{% endif %}
+    >
+      {% csrf_token %}
+      <h3>Шаг 1. Основная информация</h3>
+      {% for field in form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.name == "description" %}
+            <div class="snippet-toolbar">
+              <button type="button" class="snippet-btn js-insert-snippet" data-target="#{{ field.id_for_label }}" data-before="&lt;h3&gt;Подзаголовок&lt;/h3&gt;&#10;">H3</button>
+              <button type="button" class="snippet-btn js-insert-snippet" data-target="#{{ field.id_for_label }}" data-before="&lt;p&gt;Абзац текста&lt;/p&gt;&#10;">Параграф</button>
+              <button type="button" class="snippet-btn js-insert-snippet" data-target="#{{ field.id_for_label }}" data-before="&lt;ul&gt;&#10;  &lt;li&gt;Пункт 1&lt;/li&gt;&#10;  &lt;li&gt;Пункт 2&lt;/li&gt;&#10;&lt;/ul&gt;&#10;">Список</button>
+            </div>
+            <p class="muted">Поддерживается HTML-форматирование описания курса.</p>
+          {% endif %}
+          {% if field.help_text %}<p class="muted">{{ field.help_text }}</p>{% endif %}
+          {% if field.errors %}<p class="field-error">{{ field.errors|join:", " }}</p>{% endif %}
+        </div>
+      {% endfor %}
+
+      <h3>Шаг 2. Структура курса</h3>
+      {% for field in structure_form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text }}</p>{% endif %}
+          {% if field.errors %}<p class="field-error">{{ field.errors|join:", " }}</p>{% endif %}
+        </div>
+      {% endfor %}
+
+      <div class="row-actions">
+        <button class="btn primary" type="submit">{{ submit_text }}</button>
+        <a class="btn ghost" href="{% url 'dashboard:teacher_courses' %}">Отмена</a>
+        {% if course %}<span class="autosave-status js-autosave-status muted">Черновик сохранен</span>{% endif %}
+      </div>
+    </form>
+  </div>
+</section>
+
+{% if course %}
+<section class="section-block">
+  <div class="section-head">
+    <h2>Конструктор наполнения курса</h2>
+  </div>
+
+  {% if course.modules.all %}
+    <div class="panel course-outline">
+      <h3>Быстрый переход по структуре</h3>
+      <div class="outline-links">
+        {% for module in course.modules.all %}
+          <a class="chip outline-module-link" href="#module-{{ module.id }}">{{ module.title }}</a>
+          {% for lesson in module.lessons.all %}
+            <a class="outline-lesson-link" href="#lesson-{{ lesson.id }}">{{ lesson.title }}</a>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="panel auth">
+    <h3>Добавить модуль</h3>
+    <form method="post" action="{% url 'dashboard:teacher_course_add_module' course.pk %}" class="stack-form">
+      {% csrf_token %}
+      {% for field in module_form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+        </div>
+      {% endfor %}
+      <button class="btn primary" type="submit">Добавить модуль</button>
+    </form>
+  </div>
+
+  <div class="builder-grid">
+    {% for module in course.modules.all %}
+      <article class="card builder-module" id="module-{{ module.id }}">
+        <details open>
+          <summary>
+            <span class="tag">Модуль #{{ module.order }}</span>
+            <strong>{{ module.title }}</strong>
+          </summary>
+
+          <div class="builder-inner">
+            <h4>Добавить урок в модуль</h4>
+            <form method="post" action="{% url 'dashboard:teacher_course_add_lesson' course.pk %}" class="stack-form">
+              {% csrf_token %}
+              <input type="hidden" name="module_id" value="{{ module.id }}">
+              <div class="form-field">
+                <label>Название урока</label>
+                <input type="text" name="title" placeholder="Например: Переменные и типы" required>
+              </div>
+              <div class="form-field">
+                <label>Краткое описание</label>
+                <textarea name="summary" rows="3" placeholder="О чем урок"></textarea>
+              </div>
+              <div class="row-actions">
+                <div class="form-field inline-number">
+                  <label>Порядок</label>
+                  <input type="number" name="order" value="1" min="1">
+                </div>
+                <div class="form-field">
+                  <label>Шаблон урока</label>
+                  <select name="lesson_template">
+                    <option value="">Без шаблона</option>
+                    <option value="theory_code_task">Теория + Код + Задание</option>
+                    <option value="theory_only">Теория</option>
+                    <option value="practice_only">Практика</option>
+                  </select>
+                </div>
+                <label class="inline-check"><input type="checkbox" name="is_published" checked> Опубликовать</label>
+              </div>
+              <button class="btn primary" type="submit">Добавить урок</button>
+            </form>
+          </div>
+
+          {% for lesson in module.lessons.all %}
+            <details class="builder-lesson" id="lesson-{{ lesson.id }}" open>
+            <summary>
+              <span class="tag accent-green">Урок #{{ lesson.order }}</span>
+              <strong>{{ lesson.title }}</strong>
+              <a class="btn ghost lesson-preview-link" href="{% url 'dashboard:teacher_lesson_preview' lesson.id %}" target="_blank" rel="noopener">Предпросмотр</a>
+            </summary>
+              <p class="muted">{{ lesson.summary|default:"Без описания" }}</p>
+
+              <div class="builder-inner">
+                <h4>Добавить блок контента</h4>
+                <form method="post" action="{% url 'dashboard:teacher_course_add_block' course.pk %}" class="stack-form block-builder" x-data="{ type: 'text' }">
+                  {% csrf_token %}
+                  <input type="hidden" name="lesson_id" value="{{ lesson.id }}">
+                  <p class="muted">Добавляйте последовательность блоков: текст → код → изображение → видео и т.д.</p>
+                  <div class="builder-type-tabs" role="tablist" aria-label="Тип блока">
+                    <button type="button" class="type-chip" :class="{ 'active': type === 'text' }" @click="type = 'text'">Текст</button>
+                    <button type="button" class="type-chip" :class="{ 'active': type === 'code' }" @click="type = 'code'">Код</button>
+                    <button type="button" class="type-chip" :class="{ 'active': type === 'image' }" @click="type = 'image'">Изображение</button>
+                    <button type="button" class="type-chip" :class="{ 'active': type === 'video' }" @click="type = 'video'">Видео</button>
+                    <button type="button" class="type-chip" :class="{ 'active': type === 'file' }" @click="type = 'file'">Файл</button>
+                  </div>
+                  <div class="builder-two-cols">
+                    <div class="form-field">
+                      <label>Тип блока</label>
+                      <select name="type" x-model="type" required>
+                        <option value="text">Текст</option>
+                        <option value="code">Код</option>
+                        <option value="image">Изображение</option>
+                        <option value="video">Видео</option>
+                        <option value="file">Файл</option>
+                      </select>
+                    </div>
+                    <div class="form-field">
+                      <label>Порядок</label>
+                      <input type="number" name="order" min="1" placeholder="Авто">
+                    </div>
+                  </div>
+                  <div class="form-field" x-show="type === 'text'">
+                    <label>Текстовый блок</label>
+                    <div class="rich-toolbar">
+                      <button type="button" class="rich-btn" data-cmd="formatBlock" data-value="p">P</button>
+                      <button type="button" class="rich-btn" data-cmd="formatBlock" data-value="h2">H2</button>
+                      <button type="button" class="rich-btn" data-cmd="formatBlock" data-value="h3">H3</button>
+                      <button type="button" class="rich-btn" data-cmd="formatBlock" data-value="h4">H4</button>
+                      <button type="button" class="rich-btn" data-cmd="bold">Жирный</button>
+                      <button type="button" class="rich-btn" data-cmd="italic">Курсив</button>
+                      <button type="button" class="rich-btn" data-cmd="underline">Подчерк.</button>
+                      <button type="button" class="rich-btn" data-cmd="strikeThrough">Зачерк.</button>
+                      <button type="button" class="rich-btn" data-cmd="insertUnorderedList">• Список</button>
+                      <button type="button" class="rich-btn" data-cmd="insertOrderedList">1. Список</button>
+                      <button type="button" class="rich-btn" data-cmd="justifyLeft">←</button>
+                      <button type="button" class="rich-btn" data-cmd="justifyCenter">↔</button>
+                      <button type="button" class="rich-btn" data-cmd="justifyRight">→</button>
+                      <button type="button" class="rich-btn" data-cmd="formatBlock" data-value="blockquote">Цитата</button>
+                      <button type="button" class="rich-btn" data-action="insertTable">Таблица</button>
+                      <button type="button" class="rich-btn" data-action="insertImageUrl">Изобр. URL</button>
+                      <button type="button" class="rich-btn" data-cmd="createLink">Ссылка</button>
+                      <button type="button" class="rich-btn" data-action="insertHr">Линия</button>
+                      <label class="rich-color-wrap">
+                        <span>Цвет</span>
+                        <input type="color" class="rich-color-picker" value="#111827" aria-label="Цвет текста">
+                      </label>
+                      <button type="button" class="rich-btn" data-cmd="removeFormat">Очистить</button>
+                      <button type="button" class="rich-btn" data-cmd="undo">↶</button>
+                      <button type="button" class="rich-btn" data-cmd="redo">↷</button>
+                    </div>
+                    <div class="rich-editor js-rich-editor" contenteditable="true" data-placeholder="Введите текст урока (без HTML-тегов)"></div>
+                    <input type="hidden" name="text_content" class="js-rich-editor-output" :disabled="type !== 'text'">
+                    <p class="muted">Списки продолжаются по Enter автоматически. Shift+Enter — перенос строки. Горячие клавиши: Ctrl/Cmd+B/I/U/K, Ctrl/Cmd+Shift+7/8, Ctrl/Cmd+Shift+T (таблица), Ctrl/Cmd+Shift+M (изображение).</p>
+                  </div>
+                  <div class="form-field" x-show="type === 'code'">
+                    <label>Код</label>
+                    <textarea name="text_content" rows="6" placeholder="Введите код..." :disabled="type !== 'code'"></textarea>
+                  </div>
+                  <div class="builder-two-cols" x-show="type === 'image' || type === 'video' || type === 'file'">
+                    <div class="form-field">
+                      <label>URL ресурса</label>
+                      <input type="text" name="resource_url" placeholder="https://... или /static/...">
+                    </div>
+                    <div class="form-field" x-show="type === 'image'">
+                      <label>Подпись (для изображений)</label>
+                      <input type="text" name="caption" placeholder="Подпись">
+                    </div>
+                  </div>
+                  <div class="form-field" x-show="type === 'code'">
+                    <label>Язык кода</label>
+                    <input type="text" name="language" placeholder="python / js / html">
+                  </div>
+                  <button class="btn primary" type="submit">Добавить блок в урок</button>
+                </form>
+              </div>
+
+              <div
+                class="builder-block-list js-block-list"
+                data-reorder-url="{% url 'dashboard:teacher_course_reorder_blocks' course.pk lesson.id %}"
+              >
+                {% for block in lesson.blocks.all %}
+                  <div class="builder-block-item js-draggable-block" draggable="true" data-block-id="{{ block.id }}">
+                    <div class="block-item-head">
+                      <p class="tag">{{ block.get_type_display }} #{{ block.order }}</p>
+                      <div class="block-item-actions">
+                        <form method="post" action="{% url 'dashboard:teacher_course_duplicate_block' course.pk block.id %}">
+                          {% csrf_token %}
+                          <button class="btn ghost" type="submit">Дублировать</button>
+                        </form>
+                        <span class="drag-handle" title="Перетащить">↕</span>
+                      </div>
+                    </div>
+                    {% if block.type == "text" %}
+                      <p>{{ block.payload.text|default:""|truncatechars:200 }}</p>
+                    {% elif block.type == "code" %}
+                      <pre>{{ block.payload.code|default:""|truncatechars:260 }}</pre>
+                      {% if block.language %}<p class="muted">Язык: {{ block.language }}</p>{% endif %}
+                    {% elif block.type == "image" %}
+                      <p class="muted">URL: {{ block.payload.url }}</p>
+                      <p>{{ block.payload.caption }}</p>
+                    {% elif block.type == "video" %}
+                      <p class="muted">Видео: {{ block.payload.url }}</p>
+                    {% elif block.type == "file" %}
+                      <p class="muted">Файл: {{ block.payload.url }}</p>
+                    {% endif %}
+                  </div>
+                {% empty %}
+                  <p class="muted">Блоки пока не добавлены.</p>
+                {% endfor %}
+                <p class="muted reorder-hint">Перетаскивайте блоки мышкой для изменения порядка.</p>
+              </div>
+            </details>
+          {% empty %}
+            <p class="muted">Уроков в модуле пока нет.</p>
+          {% endfor %}
+        </details>
+      </article>
+    {% empty %}
+      <p class="muted">Сначала добавьте модуль.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

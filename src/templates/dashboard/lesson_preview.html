@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<article class="lesson">
-  <p class="crumbs"><a href="{% url 'courses:detail' course.slug %}">{{ course.title }}</a> / {{ lesson.title }}</p>
-  <h1>{{ lesson.title }}</h1>
-  <p class="muted">{{ lesson.summary }}</p>
-
-  <div id="progress-badge">
-    {% if request.user.is_authenticated %}
-      {% include "courses/partials/progress_badge.html" with progress_record=progress_record %}
-    {% endif %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Предпросмотр как ученик</p>
+    <h1>{{ lesson.title }}</h1>
+    <p>{{ lesson.summary }}</p>
   </div>
+  <div class="hero__actions">
+    <a class="btn ghost" href="{% url 'dashboard:teacher_course_edit' course.pk %}">Назад в редактор</a>
+    <a class="btn primary" href="{% url 'courses:detail' course.slug %}">Открыть курс</a>
+  </div>
+</section>
 
+<section class="section-block">
   <div class="lesson-blocks">
     {% for block in lesson.blocks.all %}
       {% if block.type == 'text' %}
@@ -25,17 +27,8 @@
         <div class="block file"><a class="btn ghost" href="{{ block.payload.url }}" download>Скачать файл</a></div>
       {% endif %}
     {% empty %}
-      <p class="muted">Контент урока появится позже.</p>
+      <p class="muted">Контент урока пока пуст.</p>
     {% endfor %}
   </div>
-
-  {% if request.user.is_authenticated %}
-    <form action="{% url 'progress:mark_lesson' lesson.pk %}" method="post" hx-post="{% url 'progress:mark_lesson' lesson.pk %}" hx-target="#progress-badge" hx-swap="outerHTML" class="lesson-action">
-      {% csrf_token %}
-      <button class="btn primary" type="submit">Отметить как пройдено</button>
-    </form>
-  {% else %}
-    <p class="muted">Войдите, чтобы отслеживать прогресс.</p>
-  {% endif %}
-</article>
+</section>
 {% endblock %}

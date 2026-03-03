@@ -12,7 +12,21 @@
   <section class="auth">
     <form method="post" class="stack-form">
       {% csrf_token %}
-      {{ form.as_p }}
+      {% if form.non_field_errors %}
+        <ul class="alerts">
+          {% for err in form.non_field_errors %}
+            <li class="error">{{ err }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% for field in form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<div class="muted help-text">{{ field.help_text|safe }}</div>{% endif %}
+          {% if field.errors %}<p class="field-error">{{ field.errors|join:", " }}</p>{% endif %}
+        </div>
+      {% endfor %}
       <button class="btn primary" type="submit">Создать аккаунт</button>
     </form>
     <p class="muted">Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p>

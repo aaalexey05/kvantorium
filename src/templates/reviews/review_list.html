@@ -24,11 +24,11 @@
 </section>
 
 <section class="section-block">
-  <div class="panel form-panel auth">
+  <div class="panel form-panel auth review-panel">
     <h2>Оставить отзыв</h2>
-    <form method="post" action="{% url 'reviews:submit' %}" class="stack-form">
+    <form method="post" action="{% url 'reviews:submit' %}" class="stack-form review-form">
       {% csrf_token %}
-      {{ form.as_p }}
+      {% include "reviews/partials/review_form_fields.html" with form=form %}
       <button class="btn primary" type="submit">Отправить</button>
     </form>
   </div>

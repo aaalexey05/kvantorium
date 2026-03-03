@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Преподаватель</p>
+    <h1>Мой дашборд</h1>
+    <p>Ваши курсы, активность учеников и последние отзывы.</p>
+  </div>
+  <div class="hero__actions">
+    <a class="btn primary" href="{% url 'dashboard:teacher_course_create' %}">Создать курс</a>
+    <a class="btn ghost" href="{% url 'dashboard:teacher_stats' %}">Статистика</a>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Мои курсы</h2>
+    <a href="{% url 'dashboard:teacher_courses' %}">Управление курсами</a>
+  </div>
+  <div class="grid">
+    {% for course in courses %}
+      <article class="card">
+        <p class="tag">{{ course.get_status_display }}</p>
+        <h3>{{ course.title }}</h3>
+        <p class="muted">Учеников: {{ course.students_count }}</p>
+        <p class="muted">Средний прогресс: {{ course.avg_progress|default:0|floatformat:1 }}%</p>
+        <div class="card__footer">
+          <a class="btn ghost" href="{% url 'dashboard:teacher_course_edit' course.pk %}">Редактировать</a>
+          <a class="btn ghost" href="{% url 'courses:detail' course.slug %}">Открыть</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted">У вас пока нет курсов.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Последние отзывы</h2>
+  </div>
+  <div class="grid">
+    {% for review in latest_reviews %}
+      <article class="card card-review">
+        <p class="tag accent-green">{{ review.get_author_type_display }}</p>
+        <h3>{{ review.name }}</h3>
+        <p class="muted">Оценка: {{ review.rating }}/5</p>
+        <p>{{ review.text|truncatechars:140 }}</p>
+      </article>
+    {% empty %}
+      <p class="muted">Пока нет отзывов.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

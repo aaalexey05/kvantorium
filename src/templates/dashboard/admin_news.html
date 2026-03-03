@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Админ / Новости</p>
+    <h1>Добавить новость</h1>
+    <p>Создавайте новости и анонсы без перехода в стандартную админку.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="panel auth">
+    <form method="post" enctype="multipart/form-data" class="stack-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<p class="field-error">{{ field.errors|join:", " }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn primary" type="submit">Добавить новость</button>
+    </form>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Последние новости</h2>
+  </div>
+  <div class="grid">
+    {% for post in posts %}
+      <article class="card card-news">
+        <p class="tag">{{ post.published_at|date:"d.m.Y H:i" }}</p>
+        <h3>{{ post.title }}</h3>
+        <p class="muted">{{ post.summary|truncatechars:150 }}</p>
+        <div class="card__footer">
+          <a class="btn ghost" href="{% url 'news:detail' post.slug %}">Открыть</a>
+          <form method="post" action="{% url 'dashboard:admin_news_delete' post.pk %}">
+            {% csrf_token %}
+            <button class="btn secondary" type="submit">Удалить</button>
+          </form>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted">Новостей пока нет.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

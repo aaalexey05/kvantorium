@@ -1,0 +1,16 @@
+Python Quick Cheatsheet
+
+1) Variables
+name = "Kvantorium"
+
+2) Conditions
+if score >= 80:
+    print("Great")
+
+3) Loops
+for i in range(3):
+    print(i)
+
+4) Functions
+def greet(user):
+    return f"Hello, {user}!"

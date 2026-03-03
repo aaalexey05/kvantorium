@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from apps.courses.models import Course
 from apps.news.models import NewsPost
 from apps.achievements.models import Achievement
@@ -17,6 +17,13 @@ def health(request):
 
 
 def home(request):
+    if request.user.is_authenticated:
+        if request.user.role == "admin":
+            return redirect("dashboard:admin_home")
+        if request.user.role == "teacher":
+            return redirect("dashboard:teacher_home")
+        return redirect("accounts:profile")
+
     courses = Course.objects.filter(status="published")[:3]
     news = NewsPost.objects.filter(status="published")[:3]
     achievements = Achievement.objects.all()[:3]
@@ -32,3 +39,14 @@ def home(request):
 def contacts(request):
     info = ContactInfo.objects.first()
     return render(request, "core/contacts.html", {"info": info})
+
+
+def chrome_devtools_manifest(request):
+    # Return a valid JSON response to suppress noisy 404 probes from Chrome devtools.
+    return JsonResponse(
+        {
+            "name": "Kvantorium LMS",
+            "short_name": "Kvantorium",
+            "description": "Local dev endpoint for chrome devtools probe",
+        }
+    )

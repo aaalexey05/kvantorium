@@ -1,11 +1,27 @@
 <header class="site-header">
   <nav class="nav-shell">
-    <a class="brand" href="{% url 'core:home' %}">Кванториум 22</a>
-    <a class="nav-link" href="{% url 'courses:list' %}">Курсы</a>
-    <a class="nav-link" href="{% url 'news:list' %}">Новости</a>
-    <a class="nav-link" href="{% url 'achievements:list' %}">Достижения</a>
-    <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
-    <a class="nav-link" href="{% url 'core:contacts' %}">Контакты</a>
+    <a class="brand" href="{% if user.is_authenticated %}{% url 'dashboard:home' %}{% else %}{% url 'core:home' %}{% endif %}">Кванториум 22</a>
+    {% if user.is_authenticated and user.role == 'admin' %}
+      <a class="nav-link" href="{% url 'dashboard:admin_home' %}">Дашборд</a>
+      <a class="nav-link" href="{% url 'dashboard:admin_courses' %}">Курсы</a>
+      <a class="nav-link" href="{% url 'dashboard:admin_users' %}">Пользователи</a>
+      <a class="nav-link" href="{% url 'dashboard:admin_news' %}">Новости</a>
+      <a class="nav-link" href="{% url 'dashboard:admin_achievements' %}">Достижения</a>
+      <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
+      <a class="nav-link" href="/admin/">Настройки</a>
+    {% elif user.is_authenticated and user.role == 'teacher' %}
+      <a class="nav-link" href="{% url 'dashboard:teacher_home' %}">Дашборд</a>
+      <a class="nav-link" href="{% url 'dashboard:teacher_courses' %}">Мои курсы</a>
+      <a class="nav-link" href="{% url 'dashboard:teacher_course_create' %}">Создать курс</a>
+      <a class="nav-link" href="{% url 'dashboard:teacher_stats' %}">Статистика</a>
+      <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
+    {% else %}
+      <a class="nav-link" href="{% url 'courses:list' %}">Курсы</a>
+      <a class="nav-link" href="{% url 'news:list' %}">Новости</a>
+      <a class="nav-link" href="{% url 'achievements:list' %}">Достижения</a>
+      <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
+      <a class="nav-link" href="{% url 'core:contacts' %}">Контакты</a>
+    {% endif %}
     <div class="spacer"></div>
     <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему"><span></span></button>
     {% if user.is_authenticated %}

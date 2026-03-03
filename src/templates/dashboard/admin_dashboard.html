@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Администрирование</p>
+    <h1>Панель администратора</h1>
+    <p>Общий обзор пользователей, курсов и активности платформы.</p>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="grid stats-grid">
+    <article class="card stat-card">
+      <p class="tag">Курсы</p>
+      <h3>{{ total_courses }}</h3>
+      <p class="muted">Опубликовано: {{ published_courses }}</p>
+    </article>
+    <article class="card stat-card">
+      <p class="tag accent-green">Уроки</p>
+      <h3>{{ total_lessons }}</h3>
+      <p class="muted">Активных: {{ published_lessons }}</p>
+    </article>
+    <article class="card stat-card">
+      <p class="tag accent-pink">Пользователи</p>
+      <h3>{{ students_count|add:teachers_count|add:parents_count }}</h3>
+      <p class="muted">Ученики: {{ students_count }}, преподаватели: {{ teachers_count }}, родители: {{ parents_count }}</p>
+    </article>
+    <article class="card stat-card">
+      <p class="tag">Контент</p>
+      <h3>{{ news_count|add:achievements_count }}</h3>
+      <p class="muted">Новостей: {{ news_count }}, достижений: {{ achievements_count }}</p>
+    </article>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="section-head">
+    <h2>Быстрые действия</h2>
+  </div>
+  <div class="grid">
+    <article class="card">
+      <h3>Управление курсами</h3>
+      <p class="muted">Назначайте преподавателей, меняйте статус и модерируйте каталог.</p>
+      <a class="btn primary" href="{% url 'dashboard:admin_courses' %}">Открыть</a>
+    </article>
+    <article class="card">
+      <h3>Управление пользователями</h3>
+      <p class="muted">Фильтрация по ролям, смена ролей и блокировка аккаунтов.</p>
+      <a class="btn primary" href="{% url 'dashboard:admin_users' %}">Открыть</a>
+    </article>
+    <article class="card">
+      <h3>Управление новостями</h3>
+      <p class="muted">Публикуйте новости и анонсы прямо из ролевого интерфейса.</p>
+      <a class="btn primary" href="{% url 'dashboard:admin_news' %}">Открыть</a>
+    </article>
+    <article class="card">
+      <h3>Управление достижениями</h3>
+      <p class="muted">Добавляйте победы, проекты и ключевые результаты учеников.</p>
+      <a class="btn primary" href="{% url 'dashboard:admin_achievements' %}">Открыть</a>
+    </article>
+    <article class="card">
+      <h3>Настройки и модерация</h3>
+      <p class="muted">Новости, достижения и отзывы доступны через стандартные разделы.</p>
+      <a class="btn ghost" href="/admin/">Django admin</a>
+    </article>
+  </div>
+</section>
+{% endblock %}

@@ -1,11 +1,16 @@
-from apps.courses.models import Course
+from apps.courses.models import Course, Lesson
 from .models import CourseProgress, LessonProgressEvent
 
 
 def update_course_progress(user, course: Course):
-    total_lessons = course.modules.prefetch_related("lessons").aggregate(count=models.Count("lessons"))["count"] or 0
+    total_lessons = Lesson.objects.filter(module__course=course, is_published=True).count()
     done_lessons = (
-        LessonProgressEvent.objects.filter(user=user, lesson__module__course=course)
+        LessonProgressEvent.objects.filter(
+            user=user,
+            lesson__module__course=course,
+            lesson__is_published=True,
+            event_type="done",
+        )
         .values("lesson")
         .distinct()
         .count()

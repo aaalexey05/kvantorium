@@ -5,6 +5,13 @@
     <p class="tag">{{ course.tags|default:"Курс" }}</p>
     <h1>{{ course.title }}</h1>
     <p class="muted">{{ course.short_description }}</p>
+    {% if request.user.is_authenticated %}
+      {% if course_progress %}
+        <p class="pill">Общий прогресс: {{ course_progress.percent }}%</p>
+      {% else %}
+        <p class="pill">Общий прогресс: 0%</p>
+      {% endif %}
+    {% endif %}
   </div>
   <div id="enroll-btn" hx-target="#enroll-btn" hx-swap="outerHTML">
     {% include "courses/partials/enroll_button.html" with course=course enrolled=enrolled %}

@@ -26,7 +26,13 @@ class Course(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            base_slug = slugify(self.title) or "course"
+            candidate = base_slug
+            index = 2
+            while Course.objects.filter(slug=candidate).exclude(pk=self.pk).exists():
+                candidate = f"{base_slug}-{index}"
+                index += 1
+            self.slug = candidate
         super().save(*args, **kwargs)
 
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero">
+<section class="hero home-hero">
   <div class="hero__text">
     <p class="eyebrow">LMS-Платформа</p>
     <h1>Учимся программированию в мягком и понятном интерфейсе</h1>
@@ -89,11 +89,11 @@
       <p class="muted">Отзывы появятся после модерации.</p>
     {% endfor %}
   </div>
-  <div class="panel form-panel">
+  <div class="panel form-panel review-panel">
     <h3>Оставить отзыв</h3>
-    <form method="post" action="{% url 'reviews:submit' %}" class="stack-form">
+    <form method="post" action="{% url 'reviews:submit' %}" class="stack-form review-form">
       {% csrf_token %}
-      {{ review_form.as_p }}
+      {% include "reviews/partials/review_form_fields.html" with form=review_form %}
       <button class="btn primary" type="submit">Отправить</button>
     </form>
   </div>
