@@ -1,0 +1,23 @@
+<div class="panel map-panel {% if map_valid %}is-valid{% else %}is-invalid{% endif %}" data-map-valid="{{ map_valid|yesno:'true,false' }}">
+  <div class="section-head">
+    <h2>Карта</h2>
+    <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query={{ resolved_address|default:address|urlencode }}" target="_blank" rel="noopener">Открыть в Google Maps</a>
+  </div>
+  <div class="map-frame">
+    <iframe
+      src="{{ embed_url }}"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen
+      title="Карта"
+    ></iframe>
+  </div>
+  {% if map_notice %}
+    <p class="map-notice">{{ map_notice }}</p>
+  {% endif %}
+  {% if resolved_address %}
+    <p class="muted">Точка на карте: {{ resolved_address }}</p>
+  {% elif address %}
+    <p class="muted">Адрес для карты: {{ address }}</p>
+  {% endif %}
+</div>

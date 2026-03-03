@@ -56,6 +56,7 @@ docker compose run --rm web python src/manage.py seed_demo
 - Роли:
   - admin: доступны `/dashboard/admin/`, `/dashboard/admin/courses/`, `/dashboard/admin/users/`
   - admin (контент): `/dashboard/admin/news/`, `/dashboard/admin/achievements/`
+  - admin (контакты + карта): `/dashboard/admin/contacts/` (адрес обновляет карту в live-preview через HTMX)
   - teacher: доступны `/dashboard/teacher/`, `/dashboard/teacher/courses/`, `/dashboard/teacher/courses/create/`, `/dashboard/teacher/stats/`
   - teacher (наполнение курса): в `/dashboard/teacher/courses/<id>/edit/` можно добавлять модули, уроки и блоки контента (`text`, `code`, `image`, `video`, `file`)
   - student/parent: прямой доступ на admin/teacher страницы должен отдавать `403`

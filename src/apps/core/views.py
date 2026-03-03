@@ -7,6 +7,7 @@ from apps.achievements.models import Achievement
 from apps.reviews.forms import ReviewForm
 from apps.reviews.models import Review
 from .models import ContactInfo
+from .map_utils import build_contact_map_context
 
 
 def health(request):
@@ -38,7 +39,8 @@ def home(request):
 
 def contacts(request):
     info = ContactInfo.objects.first()
-    return render(request, "core/contacts.html", {"info": info})
+    map_ctx = build_contact_map_context(info.address, info.map_url) if info else {}
+    return render(request, "core/contacts.html", {"info": info, **map_ctx})
 
 
 def chrome_devtools_manifest(request):

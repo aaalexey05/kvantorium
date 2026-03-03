@@ -10,12 +10,27 @@
 
 <section class="section-block">
 {% if info %}
-  <div class="panel">
-    <p><strong>Адрес:</strong> {{ info.address }}</p>
-    {% if info.phone %}<p><strong>Телефон:</strong> {{ info.phone }}</p>{% endif %}
-    {% if info.email %}<p><strong>Email:</strong> <a href="mailto:{{ info.email }}">{{ info.email }}</a></p>{% endif %}
-    {% if info.schedule %}<p><strong>График:</strong> {{ info.schedule }}</p>{% endif %}
-    {% if info.map_url %}<p><a class="btn ghost" href="{{ info.map_url }}" target="_blank">Открыть карту</a></p>{% endif %}
+  <div class="contacts-grid">
+    <div class="panel">
+      <p><strong>Адрес:</strong> {{ info.address }}</p>
+      {% if info.phone %}<p><strong>Телефон:</strong> {{ info.phone }}</p>{% endif %}
+      {% if info.email %}<p><strong>Email:</strong> <a href="mailto:{{ info.email }}">{{ info.email }}</a></p>{% endif %}
+      {% if info.schedule %}<p><strong>График:</strong> {{ info.schedule }}</p>{% endif %}
+    </div>
+    <div class="panel map-panel">
+      <div class="map-frame">
+        <iframe
+          src="{{ embed_url }}"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+          title="Карта"
+        ></iframe>
+      </div>
+      {% comment %} {% if map_notice %}<p class="map-notice">{{ map_notice }}</p>{% endif %} {% endcomment %}
+      {% if resolved_address %}<p class="muted">Точка на карте: {{ resolved_address }}</p>{% endif %}
+      <p><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query={{ resolved_address|default:info.address|urlencode }}" target="_blank" rel="noopener">Открыть карту</a></p>
+    </div>
   </div>
 {% else %}
   <p class="muted">Контактная информация будет добавлена позже.</p>

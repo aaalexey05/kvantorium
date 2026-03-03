@@ -662,6 +662,13 @@ textarea:focus {
   background: var(--input-bg-focus);
 }
 
+input.is-invalid,
+select.is-invalid,
+textarea.is-invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 1px var(--danger);
+}
+
 textarea {
   min-height: 110px;
   resize: vertical;
@@ -825,6 +832,44 @@ textarea::placeholder {
   margin: 0;
   font-size: 34px;
   line-height: 1;
+}
+
+.contacts-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.map-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.map-panel.is-invalid {
+  border-color: var(--danger);
+}
+
+.map-frame {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-ghost);
+}
+
+.map-frame iframe {
+  width: 100%;
+  min-height: 340px;
+  border: 0;
+}
+
+.map-notice {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.map-panel.is-invalid .map-notice {
+  color: var(--danger);
 }
 
 .builder-grid {

@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from apps.achievements.models import Achievement
+from apps.core.models import ContactInfo
 from apps.courses.models import Course, CourseModule, Enrollment, Lesson, LessonBlock
 from apps.news.models import NewsPost
 from apps.progress.models import LessonProgressEvent
@@ -637,6 +638,16 @@ class Command(BaseCommand):
                 text=text,
                 defaults={"rating": rating, "is_approved": True},
             )
+
+        ContactInfo.objects.update_or_create(
+            address="г. Барнаул, проспект Ленина, 40",
+            defaults={
+                "phone": "+7 (3852) 12-34-56",
+                "email": "info@kvantorium.local",
+                "schedule": "Пн-Пт 09:00-18:00",
+                "map_url": "",
+            },
+        )
 
         if created_courses:
             completed_lessons = Lesson.objects.filter(module__course=created_courses[0], is_published=True).order_by("order")[:2]

@@ -20,6 +20,8 @@ urlpatterns = [
         views.admin_achievements_delete,
         name="admin_achievements_delete",
     ),
+    path("admin/contacts/", views.admin_contacts, name="admin_contacts"),
+    path("admin/contacts/map-preview/", views.admin_contacts_map_preview, name="admin_contacts_map_preview"),
     path("teacher/", views.teacher_dashboard, name="teacher_home"),
     path("teacher/courses/", views.teacher_courses, name="teacher_courses"),
     path("teacher/courses/create/", views.teacher_course_create, name="teacher_course_create"),

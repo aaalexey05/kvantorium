@@ -6,18 +6,22 @@ from django.db import transaction
 from django.db.models import Avg, Count, Max
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from urllib.parse import parse_qs, urlparse
 
 from apps.achievements.models import Achievement
 from apps.accounts.permissions import admin_required, teacher_or_admin_required
+from apps.core.map_utils import build_contact_map_context
+from apps.core.models import ContactInfo
 from apps.courses.models import Course, CourseModule, Lesson, LessonBlock
 from apps.news.models import NewsPost
 from apps.reviews.models import Review
 
 from .forms import (
     AdminAchievementForm,
+    AdminContactForm,
     AdminCourseForm,
     AdminNewsForm,
     AdminUserForm,
@@ -198,6 +202,7 @@ def admin_dashboard(request):
             "parents_count": counts.get(User.Role.PARENT, 0),
             "news_count": NewsPost.objects.count(),
             "achievements_count": Achievement.objects.count(),
+            "contacts_count": ContactInfo.objects.count(),
         },
     )
 
@@ -330,6 +335,81 @@ def admin_achievements_delete(request, pk):
     item.delete()
     messages.success(request, "Достижение удалено.")
     return redirect("dashboard:admin_achievements")
+
+
+@login_required
+@admin_required
+def admin_contacts(request):
+    info = ContactInfo.objects.order_by("id").first()
+    if info is None:
+        info = ContactInfo.objects.create(address="г. Барнаул, ул. Пример, 10")
+
+    if request.method == "POST":
+        form = AdminContactForm(request.POST, instance=info)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Контакты обновлены.")
+            return redirect("dashboard:admin_contacts")
+    else:
+        form = AdminContactForm(instance=info)
+
+    map_preview_attrs = {
+        "hx-get": reverse("dashboard:admin_contacts_map_preview"),
+        "hx-trigger": "input changed delay:700ms, blur",
+        "hx-target": "#contact-map-preview",
+        "hx-swap": "innerHTML",
+        "hx-include": "[name='city'],[name='street'],[name='house'],[name='map_url']",
+    }
+    form.fields["city"].widget.attrs.update(map_preview_attrs)
+    form.fields["street"].widget.attrs.update(map_preview_attrs)
+    form.fields["house"].widget.attrs.update(map_preview_attrs)
+    form.fields["map_url"].widget.attrs.update(map_preview_attrs)
+
+    if form.is_bound:
+        preview_address = AdminContactForm.compose_address(
+            form.data.get("city", ""),
+            form.data.get("street", ""),
+            form.data.get("house", ""),
+        )
+        preview_map_url = form.data.get("map_url", "")
+    else:
+        preview_address = AdminContactForm.compose_address(
+            form.fields["city"].initial or "",
+            form.fields["street"].initial or "",
+            form.fields["house"].initial or "",
+        )
+        preview_map_url = info.map_url
+    map_ctx = build_contact_map_context(preview_address, preview_map_url)
+    return render(
+        request,
+        "dashboard/admin_contacts.html",
+        {
+            "form": form,
+            "info": info,
+            "preview_address": preview_address,
+            **map_ctx,
+        },
+    )
+
+
+@login_required
+@admin_required
+def admin_contacts_map_preview(request):
+    address = AdminContactForm.compose_address(
+        request.GET.get("city", ""),
+        request.GET.get("street", ""),
+        request.GET.get("house", ""),
+    )
+    map_url = request.GET.get("map_url", "")
+    map_ctx = build_contact_map_context(address, map_url)
+    return render(
+        request,
+        "dashboard/partials/contact_map_preview.html",
+        {
+            "address": address,
+            **map_ctx,
+        },
+    )
 
 
 @login_required

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero compact">
+  <div class="hero__text">
+    <p class="eyebrow">Админ / Контакты</p>
+    <h1>Контактная информация</h1>
+    <p>Изменяйте адрес и сразу видьте обновление карты через HTMX.</p>
+  </div>
+</section>
+
+<section class="section-block contacts-grid">
+  <div class="panel auth">
+    <form method="post" class="stack-form">
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="form-field">
+          <p class="field-error">{{ form.non_field_errors|join:", " }}</p>
+        </div>
+      {% endif %}
+      {% for field in form %}
+        <div class="form-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<p class="field-error">{{ field.errors|join:", " }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn primary" type="submit">Сохранить контакты</button>
+    </form>
+  </div>
+
+  <div id="contact-map-preview">
+    {% include "dashboard/partials/contact_map_preview.html" with embed_url=embed_url address=preview_address map_valid=map_valid map_notice=map_notice resolved_address=resolved_address %}
+  </div>
+</section>
+{% endblock %}

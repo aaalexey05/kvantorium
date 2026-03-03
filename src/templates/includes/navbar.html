@@ -7,6 +7,7 @@
       <a class="nav-link" href="{% url 'dashboard:admin_users' %}">Пользователи</a>
       <a class="nav-link" href="{% url 'dashboard:admin_news' %}">Новости</a>
       <a class="nav-link" href="{% url 'dashboard:admin_achievements' %}">Достижения</a>
+      <a class="nav-link" href="{% url 'dashboard:admin_contacts' %}">Контакты</a>
       <a class="nav-link" href="{% url 'reviews:list' %}">Отзывы</a>
       <a class="nav-link" href="/admin/">Настройки</a>
     {% elif user.is_authenticated and user.role == 'teacher' %}

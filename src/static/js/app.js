@@ -305,8 +305,74 @@
     });
   };
 
+  const initContactMapValidation = () => {
+    const preview = document.getElementById("contact-map-preview");
+    const cityInput = document.querySelector("input[name='city']");
+    const streetInput = document.querySelector("input[name='street']");
+    const houseInput = document.querySelector("input[name='house']");
+    if (!preview || !cityInput || !streetInput) return;
+
+    const mapUrlInput = document.querySelector("input[name='map_url']");
+
+    const looksLikeEmbed = (value) => {
+      const raw = (value || "").trim().toLowerCase();
+      return raw.includes("/embed") || raw.includes("output=embed");
+    };
+
+    const looksValidAddress = () => {
+      const city = (cityInput.value || "").trim();
+      const street = (streetInput.value || "").trim();
+      return city.length >= 2 || street.length >= 3;
+    };
+
+    const setInvalid = (invalid) => {
+      const cityValue = (cityInput.value || "").trim();
+      const streetValue = (streetInput.value || "").trim();
+      cityInput.classList.toggle("is-invalid", invalid && cityValue.length < 2 && streetValue.length < 3);
+      streetInput.classList.toggle("is-invalid", invalid && cityValue.length < 2 && streetValue.length < 3);
+      if (houseInput) {
+        houseInput.classList.remove("is-invalid");
+      }
+      cityInput.setAttribute("aria-invalid", String(invalid));
+      streetInput.setAttribute("aria-invalid", String(invalid));
+    };
+
+    const applyLocalState = () => {
+      if (mapUrlInput && looksLikeEmbed(mapUrlInput.value)) {
+        setInvalid(false);
+        return;
+      }
+      setInvalid(!looksValidAddress());
+    };
+
+    const applyServerState = () => {
+      const panel = preview.querySelector(".map-panel[data-map-valid]");
+      if (!panel) return;
+      const mapValid = panel.getAttribute("data-map-valid") === "true";
+      setInvalid(!mapValid);
+    };
+
+    applyLocalState();
+    applyServerState();
+
+    cityInput.addEventListener("input", applyLocalState);
+    streetInput.addEventListener("input", applyLocalState);
+    if (houseInput) {
+      houseInput.addEventListener("input", applyLocalState);
+    }
+    if (mapUrlInput) {
+      mapUrlInput.addEventListener("input", applyLocalState);
+    }
+
+    document.body.addEventListener("htmx:afterSwap", (event) => {
+      if (!event.target || event.target.id !== "contact-map-preview") return;
+      applyServerState();
+    });
+  };
+
   initAutosave();
   initBlockDnD();
+  initContactMapValidation();
 
   document.addEventListener("click", (event) => {
     const previewLink = event.target.closest(".lesson-preview-link");

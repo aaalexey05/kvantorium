@@ -1,0 +1,6 @@
+FROM koyeb/docker-compose
+
+WORKDIR /app
+COPY . /app
+
+# По умолчанию образ запустит "docker-compose up"

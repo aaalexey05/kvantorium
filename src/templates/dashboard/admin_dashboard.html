@@ -30,6 +30,11 @@
       <h3>{{ news_count|add:achievements_count }}</h3>
       <p class="muted">Новостей: {{ news_count }}, достижений: {{ achievements_count }}</p>
     </article>
+    <article class="card stat-card">
+      <p class="tag accent-green">Контакты</p>
+      <h3>{{ contacts_count }}</h3>
+      <p class="muted">Карточек контактов в системе</p>
+    </article>
   </div>
 </section>
 
@@ -57,6 +62,11 @@
       <h3>Управление достижениями</h3>
       <p class="muted">Добавляйте победы, проекты и ключевые результаты учеников.</p>
       <a class="btn primary" href="{% url 'dashboard:admin_achievements' %}">Открыть</a>
+    </article>
+    <article class="card">
+      <h3>Контакты и карта</h3>
+      <p class="muted">Редактируйте адрес, телефон и карту с live-preview.</p>
+      <a class="btn primary" href="{% url 'dashboard:admin_contacts' %}">Открыть</a>
     </article>
     <article class="card">
       <h3>Настройки и модерация</h3>
