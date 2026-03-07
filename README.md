@@ -367,3 +367,4 @@ kvantorium/
 - Полное описание проекта, процессов и экономики: `docs/PROJECT_FULL_SPEC.md`
 - Эксплуатация и восстановление: `RUN.md`
 - [Google Диск](https://drive.google.com/drive/folders/1f34v4QIh8JFVNpj9CFZbHPcFJP8p80_6?usp=sharing)
+- [Рабочий прототип](http://217.12.40.193/)
